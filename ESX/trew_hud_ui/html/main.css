@@ -175,7 +175,7 @@ div.separator { display: block; clear: both; width: 100%; }
 .info.radio #voice i.fas { font-size: 18px; color: #FFF; }
 .info.radio #voice.speak { animation: trew-soundwave 1s infinite; }
 
-.info.time-and-place { position: absolute; bottom: 18px; right: 65px; height: 38px; font-size: 21px; color: #FFF; background: rgba(0,0,0,0.35); border-radius: 100px; text-align: right; }
+.info.time-and-place { position: absolute; bottom: 18px; right: 65px; height: 38px; font-size: 21px; color: #FFF; background: rgba(0,0,0,0.35); border-radius: 130px; text-align: right; }
 
 .info.time-and-place .data { position: relative; top: 50%; transform: translate(0,-50%); }
 .info.time-and-place .data div { padding: 0 25px;  }
