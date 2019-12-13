@@ -1,8 +1,8 @@
 Config = {}
 
-Config.Locale = 'br'
+Config.Locale = 'en'
 
-Config.serverLogo = 'https://i.imgur.com/AcgDL9f.png'
+Config.serverLogo = '/opt/FXServer/server-data/BERP-Logo.png'
 
 Config.font = {
 	name 	= 'Montserrat',
@@ -11,7 +11,7 @@ Config.font = {
 
 Config.date = {
 	format	 	= 'default',
-	AmPm		= false
+	AmPm		= true
 }
 
 Config.voice = {
@@ -22,16 +22,16 @@ Config.voice = {
 		whisper = 1.0,
 		current = 0
 	},
-	
+
 	keys = {
-		distance 	= '~',
+		distance 	= 'g',
 	}
 }
 
 
 Config.vehicle = {
-	speedUnit = 'KMH',
-	maxSpeed = 240,
+	speedUnit = 'MPH',
+	maxSpeed = 150,
 
 	keys = {
 		seatbelt 	= 'K',
@@ -54,7 +54,7 @@ Config.ui = {
 
 	showDate 			= true,
 	showLocation 		= true,
-	showVoice	 		= true,
+	showVoice	 		= false,
 
 	showHealth			= true,
 	showArmor	 		= true,
@@ -62,7 +62,7 @@ Config.ui = {
 	showHunger 			= true,
 	showThirst	 		= true,
 
-	showMinimap			= false,
+	showMinimap			= true,
 
-	showWeapons			= true,	
+	showWeapons			= true,
 }
