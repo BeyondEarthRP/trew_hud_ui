@@ -229,9 +229,7 @@ Citizen.CreateThread(function()
                 if not seatbeltIsOn then
                 	local vehIsMovingFwd = GetEntitySpeedVector(vehicle, true).y > 1.0
                     local vehAcc = (prevSpeed - currSpeed) / GetFrameTime()
-										print("vehAcc: " .. vehAcc)
-										print("seatbeltEjectSpeed: " .. seatbeltEjectAccel*9.81)
-                    if (vehIsMovingFwd and (prevSpeed > (seatbeltEjectSpeed/2.237)) and (vehAcc > (seatbeltEjectAccel*9.81))) then
+                    if (vehIsMovingFwd and (prevSpeed > (seatbeltEjectSpeed/2.237)) and (vehAcc > (seatbeltEjectAccel*5.81))) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
                         SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
                         SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z)
                         SetPedToRagdoll(player, 1000, 1000, 0, 0, 0, 0)
