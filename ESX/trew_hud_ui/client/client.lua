@@ -134,14 +134,17 @@ local prevVelocity = {x = 0.0, y = 0.0, z = 0.0}
 
 -- Jay's more realistic vehicle ejections edit
 AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehAcc, position, prevVelocity)
+
+  local velocity_multiplier = math.floor(((vehAcc/1500) + 1)*100)/100
+	local damage_multiplier = math.floor((vehAcc/math.random(3000,5000))*100)/100
 	SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
-	SetEntityVelocity(player, prevVelocity.x*((vehAcc/1500) + 1), prevVelocity.y*((vehAcc/1500) + 1), prevVelocity.z*1.3)
+	SetEntityVelocity(player, prevVelocity.x*velocity_multiplier, prevVelocity.y*velocity_multiplier, prevVelocity.z*velocity_multiplier)
 	SetPedToRagdoll(player, 1000, 2000, 1, true, false, false)
 	DisableAllControlActions(0)
 	PlayPain(player, 7, 0, 0)
 	Citizen.Wait(50)
-	ApplyDamageToPed(player, vehAcc/3000, false)
-	print("damage applied: " .. vehAcc/3000)
+	ApplyDamageToPed(player, damage_multiplier, false)
+	print("damage applied: " .. damage_multiplier)
 end)
 --------------------------------------------------------
 
