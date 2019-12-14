@@ -250,6 +250,12 @@ Citizen.CreateThread(function()
         	DisableControlAction(0, 75)
         end
 			elseif has_value(vehiclesCars, vehicleClass) == true and vehicleClass == 8 then
+
+				local prevSpeed = currSpeed
+				currSpeed = vehicleSpeedSource
+
+				SetPedConfigFlag(PlayerPedId(), 32, true)
+
 				print("riding a motorcycle.")
 				local vehIsMovingFwd = GetEntitySpeedVector(vehicle, true).y > 1.0
 				local vehAcc = (prevSpeed - currSpeed) / GetFrameTime()
