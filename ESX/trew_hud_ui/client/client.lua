@@ -656,7 +656,7 @@ Citizen.CreateThread(function()
 				TriggerEvent('trew_hud_ui:setCarSignalLights', vehicleSignalIndicator)
 			end
 		end
-
+ 
 	end
 end)
 
