@@ -231,9 +231,10 @@ Citizen.CreateThread(function()
                     local vehAcc = (prevSpeed - currSpeed) / GetFrameTime()
                     if (vehIsMovingFwd and (prevSpeed > (seatbeltEjectSpeed/2.237)) and (vehAcc > (seatbeltEjectAccel*3.81))) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
                         SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
-                        SetEntityVelocity(player, prevVelocity.x*1.5, prevVelocity.y*1.5, prevVelocity.z*2)
+                        SetEntityVelocity(player, prevVelocity.x*(vehAcc/100), prevVelocity.y*(vehAcc/100), prevVelocity.z*2)
                         SetPedToRagdoll(player, 1000, 2000, 1, true, false, false)
 												DisableAllControlActions(0)
+												PlayPain(player, 6, 0, 0)
 												Citizen.Wait(50)
 												ApplyDamageToPed(player, vehAcc/5, false)
                     else
