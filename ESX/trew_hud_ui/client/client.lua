@@ -229,8 +229,9 @@ Citizen.CreateThread(function()
                 if not seatbeltIsOn then
                 	local vehIsMovingFwd = GetEntitySpeedVector(vehicle, true).y > 1.0
                     local vehAcc = (prevSpeed - currSpeed) / GetFrameTime()
+										print("vehAcc: " .. vehAcc)
+										print("seatbeltEjectSpeed: " .. seatbeltEjectAccel*9.81)
                     if (vehIsMovingFwd and (prevSpeed > (seatbeltEjectSpeed/2.237)) and (vehAcc > (seatbeltEjectAccel*9.81))) then
-
                         SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
                         SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z)
                         SetPedToRagdoll(player, 1000, 1000, 0, 0, 0, 0)
