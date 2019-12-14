@@ -136,18 +136,19 @@ local prevVelocity = {x = 0.0, y = 0.0, z = 0.0}
 AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehAcc, position, prevVelocity)
 
   local velocity_multiplier = math.floor(((vehAcc/1500) + 1)*100)/100
-	local damage_multiplier = math.floor((vehAcc/300)*100)/100
-	local damage_amount = 5 * velocity_multiplier
+	local damage_multiplier = math.floor((vehAcc/50)*100)/100
+	local damage_impact = 5 * velocity_multiplier
+	local damage_amount = math.floor(damage_amount*damage_multiplier)
 	DisableAllControlActions(0)
 	PlayPain(player, 7, 0, 0)
 	ApplyPedDamagePack(player, 'BigRunOverByVehicle', damage_multiplier, damage_amount)
 	SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
 	SetPedToRagdoll(player, 1000, 2000, 1, true, false, false)
 	ApplyForceToEntity(player, 1, prevVelocity.x*velocity_multiplier, prevVelocity.y*velocity_multiplier, prevVelocity.z*velocity_multiplier, 0.0, 0.0, 0.0, 1, false, true, true, true, true)
-	ApplyDamageToPed(player, math.floor(damage_amount*damage_multiplier), false)
+	ApplyDamageToPed(player, , false)
 	SetEntityVelocity(player, prevVelocity.x*velocity_multiplier, prevVelocity.y*velocity_multiplier, prevVelocity.z*velocity_multiplier)
 	Citizen.Wait(50)
-	print("damage applied: " .. damage_amount .. "*" .. damage_multiplier)
+	print("damage applied: " .. damage_amount)
 end)
 --------------------------------------------------------
 
