@@ -136,8 +136,8 @@ local prevVelocity = {x = 0.0, y = 0.0, z = 0.0}
 AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehAcc, position, prevVelocity)
 
   local velocity_multiplier = math.floor(((vehAcc/1500) + 1)*100)/100
-	local damage_multiplier = math.floor((vehAcc/50)*100)/100
-	local damage_impact = 5 * velocity_multiplier
+	local damage_multiplier = (math.floor((vehAcc/50)*100)/100) + 0.01
+	local damage_impact = 5.1 * velocity_multiplier
 	local ejectionDamage = math.floor( damage_impact * damage_multiplier )
 	DisableAllControlActions(0)
 	PlayPain(player, 7, 0, 0)
@@ -148,7 +148,6 @@ AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehAcc, posi
 	ApplyDamageToPed(player, ejectionDamage, false)
 	SetEntityVelocity(player, prevVelocity.x*velocity_multiplier, prevVelocity.y*velocity_multiplier, prevVelocity.z*velocity_multiplier)
 	Citizen.Wait(50)
-	print("damage applied: " .. ejectionDamage)
 end)
 --------------------------------------------------------
 
