@@ -136,14 +136,14 @@ local prevVelocity = {x = 0.0, y = 0.0, z = 0.0}
 AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehAcc, position, prevVelocity)
 
   local velocity_multiplier = math.floor(((vehAcc/1500) + 1)*100)/100
-	local damage_multiplier = math.floor((vehAcc/math.random(3000,5000))*100)/100
+	local damage_multiplier = math.floor((vehAcc/math.random(300,500))*100)/100
 	SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
 	SetEntityVelocity(player, prevVelocity.x*velocity_multiplier, prevVelocity.y*velocity_multiplier, prevVelocity.z*velocity_multiplier)
 	SetPedToRagdoll(player, 1000, 2000, 1, true, false, false)
 	DisableAllControlActions(0)
 	PlayPain(player, 7, 0, 0)
 	Citizen.Wait(50)
-	ApplyPedDamagePack(player, 'BigHitByVehicle', velocity_multiplier, damage_multiplier)
+	ApplyPedDamagePack(player, 'Car_Crash_Heavy', velocity_multiplier, damage_multiplier)
 	print("damage applied: " .. velocity_multiplier .. "*" .. damage_multiplier)
 end)
 --------------------------------------------------------
