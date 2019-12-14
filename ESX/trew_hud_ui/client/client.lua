@@ -140,7 +140,7 @@ AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehAcc, posi
 	DisableAllControlActions(0)
 	PlayPain(player, 7, 0, 0)
 	Citizen.Wait(50)
-	ApplyDamageToPed(player, vehAcc/500, false)
+	ApplyDamageToPed(player, vehAcc/1000, false)
 end)
 --------------------------------------------------------
 
