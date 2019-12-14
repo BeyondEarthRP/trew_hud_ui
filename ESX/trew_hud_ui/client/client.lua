@@ -141,6 +141,7 @@ AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehAcc, posi
 	PlayPain(player, 7, 0, 0)
 	Citizen.Wait(50)
 	ApplyDamageToPed(player, vehAcc/1000, false)
+	print("damage applied: " .. vehAcc/1000)
 end)
 --------------------------------------------------------
 
@@ -241,7 +242,6 @@ Citizen.CreateThread(function()
           local vehAcc = (prevSpeed - currSpeed) / GetFrameTime()
           if (vehIsMovingFwd and (prevSpeed > (seatbeltEjectSpeed/2.237)) and (vehAcc > (seatbeltEjectAccel*2.7))) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
 						 TriggerEvent('trew_hud_ui:ejectPedFromVehicle', player, vehAcc, position, prevVelocity)
-						 print("car should be ejecting you.")
           else
             -- Update previous velocity for ejecting player
             prevVelocity = GetEntityVelocity(vehicle)
@@ -256,12 +256,10 @@ Citizen.CreateThread(function()
 
 				SetPedConfigFlag(PlayerPedId(), 32, true)
 
-				print("riding a motorcycle.")
 				local vehIsMovingFwd = GetEntitySpeedVector(vehicle, true).y > 1.0
 				local vehAcc = (prevSpeed - currSpeed) / GetFrameTime()
 				if (vehIsMovingFwd and (prevSpeed > (seatbeltEjectSpeed/2.237)) and (vehAcc > (seatbeltEjectAccel*1.3))) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
 					TriggerEvent('trew_hud_ui:ejectPedFromVehicle', player, vehAcc, position, prevVelocity)
-					print("should be ejecting")
 				end
 			end
 
