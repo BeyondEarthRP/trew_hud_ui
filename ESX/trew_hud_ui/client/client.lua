@@ -139,11 +139,11 @@ AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehAcc, posi
 	local damage_multiplier = math.floor((vehAcc/math.random(10,100))*100)/100
 	SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
 	SetEntityVelocity(player, prevVelocity.x*velocity_multiplier, prevVelocity.y*velocity_multiplier, prevVelocity.z*velocity_multiplier)
+	ApplyPedDamagePack(player, 'RunOverByVehicle', velocity_multiplier+10, damage_multiplier+1)
 	SetPedToRagdoll(player, 1000, 2000, 1, true, false, false)
 	DisableAllControlActions(0)
 	PlayPain(player, 7, 0, 0)
 	Citizen.Wait(50)
-	ApplyPedDamagePack(player, 'SCR_TrevorTreeBang', velocity_multiplier, damage_multiplier+1)
 	print("damage applied: " .. velocity_multiplier .. "*" .. damage_multiplier)
 end)
 --------------------------------------------------------
