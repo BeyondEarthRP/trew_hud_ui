@@ -143,7 +143,7 @@ AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehAcc, posi
 	DisableAllControlActions(0)
 	PlayPain(player, 7, 0, 0)
 	Citizen.Wait(50)
-	ApplyPedDamagePack(player, BigHitByVehicle, velocity_multiplier, damage_multiplier)
+	ApplyPedDamagePack(player, 'BigHitByVehicle', velocity_multiplier, damage_multiplier)
 	print("damage applied: " .. velocity_multiplier .. "*" .. damage_multiplier)
 end)
 --------------------------------------------------------
