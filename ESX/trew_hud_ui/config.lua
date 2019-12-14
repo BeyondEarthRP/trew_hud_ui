@@ -64,7 +64,7 @@ Config.ui = {
 	showHunger 			= true,
 	showThirst	 		= true,
 
-	showMinimap			= false,
+	showMinimap			= true,
 
 	showWeapons			= true,
 }
