@@ -39,6 +39,7 @@ Config.vehicle = {
 		signalLeft	= 'LEFT',
 		signalRight	= 'RIGHT',
 		signalBoth	= 'DOWN',
+		controlkey = 'X'
 	}
 }
 

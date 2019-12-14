@@ -105,7 +105,7 @@ Citizen.CreateThread(function()
 
 			local locationMessage = nil
 
-			if zoneNameFull then 
+			if zoneNameFull then
 				locationMessage = streetName .. ', ' .. zoneNameFull
 			else
 				locationMessage = streetName
@@ -128,14 +128,14 @@ end)
 -- Vehicle Info
 local vehicleCruiser
 local vehicleSignalIndicator = 'off'
-local seatbeltEjectSpeed = 45.0 
+local seatbeltEjectSpeed = 45.0
 local seatbeltEjectAccel = 100.0
 local seatbeltIsOn = false
 local currSpeed = 0.0
 local prevVelocity = {x = 0.0, y = 0.0, z = 0.0}
 
 Citizen.CreateThread(function()
-	
+
 	while true do
 
 		Citizen.Wait(100)
@@ -175,7 +175,7 @@ Citizen.CreateThread(function()
 			end
 
 
-			
+
 			-- Vehicle Fuel and Gear
 			local vehicleFuel
 			vehicleFuel = GetVehicleFuelLevel(vehicle)
@@ -249,7 +249,7 @@ Citizen.CreateThread(function()
 
 			end
 
-			
+
 
 			vehicleInfo = {
 				action = 'updateVehicle',
@@ -275,7 +275,7 @@ Citizen.CreateThread(function()
 			vehicleInfo['seatbelt']['status'] = seatbeltIsOn
 		else
 
-			
+
 			vehicleCruiser = false
 			vehicleNailSpeed = 0
 			vehicleSignalIndicator = 'off'
@@ -317,7 +317,7 @@ Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(1000)
 
-		local playerStatus 
+		local playerStatus
 		local showPlayerStatus = 0
 		playerStatus = { action = 'setStatus', status = {} }
 
@@ -391,7 +391,7 @@ AddEventHandler('trew_hud_ui:setInfo', function(info)
 		end
 	end
 
-	local playerStatus 
+	local playerStatus
 	local showPlayerStatus = 0
 	playerStatus = { action = 'setStatus', status = {} }
 
@@ -471,10 +471,10 @@ Citizen.CreateThread(function()
 
 
 
-			if NetworkIsPlayerTalking(PlayerId()) and not isTalking then 
+			if NetworkIsPlayerTalking(PlayerId()) and not isTalking then
 				isTalking = not isTalking
 				SendNUIMessage({ action = 'isTalking', value = isTalking })
-			elseif not NetworkIsPlayerTalking(PlayerId()) and isTalking then 
+			elseif not NetworkIsPlayerTalking(PlayerId()) and isTalking then
 				isTalking = not isTalking
 				SendNUIMessage({ action = 'isTalking', value = isTalking })
 			end
@@ -535,7 +535,7 @@ Citizen.CreateThread(function()
 				local ammoTotal = GetAmmoInPedWeapon(player,weapon)
 				local bool,ammoClip = GetAmmoInClip(player,weapon)
 				local ammoRemaining = math.floor(ammoTotal - ammoClip)
-				
+
 				status['armed'] = true
 
 				for key,value in pairs(AllWeapons) do
@@ -567,7 +567,7 @@ Citizen.CreateThread(function()
 				SendNUIMessage({ action = 'setText', id = 'weapon_ammo', value = ammoRemaining })
 
 			else
-				status['armed'] = false	
+				status['armed'] = false
 			end
 
 			SendNUIMessage({ action = 'updateWeapon', status = status })
@@ -607,13 +607,13 @@ Citizen.CreateThread(function()
 
 		-- Vehicle Cruiser
 		if IsControlJustPressed(1, Keys[Config.vehicle.keys.cruiser]) and GetPedInVehicleSeat(vehicle, -1) == player and (has_value(vehiclesCars, vehicleClass) == true) then
-			
+
 			local vehicleSpeedSource = GetEntitySpeed(vehicle)
 
 			if vehicleCruiser == 'on' then
 				vehicleCruiser = 'off'
 				SetEntityMaxSpeed(vehicle, GetVehicleHandlingFloat(vehicle,"CHandlingData","fInitialDriveMaxFlatVel"))
-				
+
 			else
 				vehicleCruiser = 'on'
 				SetEntityMaxSpeed(vehicle, vehicleSpeedSource)
@@ -625,36 +625,37 @@ Citizen.CreateThread(function()
 
 
 		-- Vehicle Signal Lights
-		if IsControlJustPressed(1, Keys[Config.vehicle.keys.signalLeft]) and (has_value(vehiclesCars, vehicleClass) == true) then
-			if vehicleSignalIndicator == 'off' then
-				vehicleSignalIndicator = 'left'
-			else
-				vehicleSignalIndicator = 'off'
+		if IsControlPressed(1, Keys[Config.vehicle.keys.controlkey]) and GetPedInVehicleSeat(vehicle, -1) == player and  (has_value(vehiclesCars, vehicleClass) == true) then
+			if IsControlJustPressed(1, Keys[Config.vehicle.keys.signalLeft]) and (has_value(vehiclesCars, vehicleClass) == true) then
+				if vehicleSignalIndicator == 'off' then
+					vehicleSignalIndicator = 'left'
+				else
+					vehicleSignalIndicator = 'off'
+				end
+
+				TriggerEvent('trew_hud_ui:setCarSignalLights', vehicleSignalIndicator)
 			end
 
-			TriggerEvent('trew_hud_ui:setCarSignalLights', vehicleSignalIndicator)
-		end
+			if IsControlJustPressed(1, Keys[Config.vehicle.keys.signalRight]) and (has_value(vehiclesCars, vehicleClass) == true) then
+				if vehicleSignalIndicator == 'off' then
+					vehicleSignalIndicator = 'right'
+				else
+					vehicleSignalIndicator = 'off'
+				end
 
-		if IsControlJustPressed(1, Keys[Config.vehicle.keys.signalRight]) and (has_value(vehiclesCars, vehicleClass) == true) then
-			if vehicleSignalIndicator == 'off' then
-				vehicleSignalIndicator = 'right'
-			else
-				vehicleSignalIndicator = 'off'
+				TriggerEvent('trew_hud_ui:setCarSignalLights', vehicleSignalIndicator)
 			end
 
-			TriggerEvent('trew_hud_ui:setCarSignalLights', vehicleSignalIndicator)
-		end
+			if IsControlJustPressed(1, Keys[Config.vehicle.keys.signalBoth]) and (has_value(vehiclesCars, vehicleClass) == true) then
+				if vehicleSignalIndicator == 'off' then
+					vehicleSignalIndicator = 'both'
+				else
+					vehicleSignalIndicator = 'off'
+				end
 
-		if IsControlJustPressed(1, Keys[Config.vehicle.keys.signalBoth]) and (has_value(vehiclesCars, vehicleClass) == true) then
-			if vehicleSignalIndicator == 'off' then
-				vehicleSignalIndicator = 'both'
-			else
-				vehicleSignalIndicator = 'off'
+				TriggerEvent('trew_hud_ui:setCarSignalLights', vehicleSignalIndicator)
 			end
-
-			TriggerEvent('trew_hud_ui:setCarSignalLights', vehicleSignalIndicator)
 		end
-
 
 	end
 end)
@@ -673,7 +674,7 @@ AddEventHandler('onClientMapStart', function()
 	SendNUIMessage({ action = 'ui', config = Config.ui })
 	SendNUIMessage({ action = 'setFont', url = Config.font.url, name = Config.font.name })
 	SendNUIMessage({ action = 'setLogo', value = Config.serverLogo })
-	
+
 	if Config.ui.showVoice == true then
 		if Config.voice.levels.current == 0 then
 			NetworkSetTalkerProximity(Config.voice.levels.default)
@@ -850,7 +851,7 @@ function trewDate()
 		timeString = string.format(
 			date_format,
 			time, day, month
-		)	
+		)
 	elseif Config.date.format == 'withWeekday' then
 		timeString = string.format(
 			date_format,
@@ -869,7 +870,7 @@ function trewDate()
 	end
 
 
-	
+
 
 	return timeString
 end
