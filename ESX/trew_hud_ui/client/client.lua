@@ -598,34 +598,31 @@ Citizen.CreateThread(function()
 		local vehicle = GetVehiclePedIsIn(player, false)
 		local vehicleClass = GetVehicleClass(vehicle)
 
-		-- Vehicle Seatbelt
-		if IsPedInAnyVehicle(player, false) and GetIsVehicleEngineRunning(vehicle) then
-			if IsControlJustReleased(0, Keys[Config.vehicle.keys.seatbelt]) and (has_value(vehiclesCars, vehicleClass) == true and vehicleClass ~= 8) then
-				seatbeltIsOn = not seatbeltIsOn
-			end
-		end
 
-		-- Vehicle Cruiser
-		if IsControlJustPressed(1, Keys[Config.vehicle.keys.cruiser]) and GetPedInVehicleSeat(vehicle, -1) == player and (has_value(vehiclesCars, vehicleClass) == true) then
-
-			local vehicleSpeedSource = GetEntitySpeed(vehicle)
-
-			if vehicleCruiser == 'on' then
-				vehicleCruiser = 'off'
-				SetEntityMaxSpeed(vehicle, GetVehicleHandlingFloat(vehicle,"CHandlingData","fInitialDriveMaxFlatVel"))
-
-			else
-				vehicleCruiser = 'on'
-				SetEntityMaxSpeed(vehicle, vehicleSpeedSource)
-			end
-		end
-
-
-
-
-
-		-- Vehicle Signal Lights
 		if IsControlPressed(1, Keys[Config.vehicle.keys.controlkey]) and GetPedInVehicleSeat(vehicle, -1) == player and  (has_value(vehiclesCars, vehicleClass) == true) then
+			-- Vehicle Seatbelt
+			if IsPedInAnyVehicle(player, false) and GetIsVehicleEngineRunning(vehicle) then
+				if IsControlJustReleased(0, Keys[Config.vehicle.keys.seatbelt]) and (has_value(vehiclesCars, vehicleClass) == true and vehicleClass ~= 8) then
+					seatbeltIsOn = not seatbeltIsOn
+				end
+			end
+
+			-- Vehicle Cruiser
+			if IsControlJustPressed(1, Keys[Config.vehicle.keys.cruiser]) and GetPedInVehicleSeat(vehicle, -1) == player and (has_value(vehiclesCars, vehicleClass) == true) then
+
+				local vehicleSpeedSource = GetEntitySpeed(vehicle)
+
+				if vehicleCruiser == 'on' then
+					vehicleCruiser = 'off'
+					SetEntityMaxSpeed(vehicle, GetVehicleHandlingFloat(vehicle,"CHandlingData","fInitialDriveMaxFlatVel"))
+
+				else
+					vehicleCruiser = 'on'
+					SetEntityMaxSpeed(vehicle, vehicleSpeedSource)
+				end
+			end
+
+  		-- Vehicle Signal Lights
 			if IsControlJustPressed(1, Keys[Config.vehicle.keys.signalLeft]) and (has_value(vehiclesCars, vehicleClass) == true) then
 				if vehicleSignalIndicator == 'off' then
 					vehicleSignalIndicator = 'left'
@@ -656,7 +653,7 @@ Citizen.CreateThread(function()
 				TriggerEvent('trew_hud_ui:setCarSignalLights', vehicleSignalIndicator)
 			end
 		end
- 
+
 	end
 end)
 
