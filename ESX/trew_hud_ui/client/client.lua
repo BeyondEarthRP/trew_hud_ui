@@ -241,6 +241,7 @@ Citizen.CreateThread(function()
           local vehAcc = (prevSpeed - currSpeed) / GetFrameTime()
           if (vehIsMovingFwd and (prevSpeed > (seatbeltEjectSpeed/2.237)) and (vehAcc > (seatbeltEjectAccel*2.7))) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
 						 TriggerEvent('trew_hud_ui:setCarSignalLights', player, vehAcc)
+						 print("car should be ejecting you.")
           else
             -- Update previous velocity for ejecting player
             prevVelocity = GetEntityVelocity(vehicle)
@@ -248,11 +249,13 @@ Citizen.CreateThread(function()
         else
         	DisableControlAction(0, 75)
         end
-			elseif vehicleClass == 8 then
+			elseif has_value(vehiclesCars, vehicleClass) == true and vehicleClass == 8 then
+				print("riding a motorcycle.")
 				local vehIsMovingFwd = GetEntitySpeedVector(vehicle, true).y > 1.0
 				local vehAcc = (prevSpeed - currSpeed) / GetFrameTime()
 				if (vehIsMovingFwd and (prevSpeed > (seatbeltEjectSpeed/2.237)) and (vehAcc > (seatbeltEjectAccel*1.7))) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
 					TriggerEvent('trew_hud_ui:setCarSignalLights', player, vehAcc)
+					Print("should be ejecting")
 				end
 			end
 
