@@ -136,11 +136,11 @@ local prevVelocity = {x = 0.0, y = 0.0, z = 0.0}
 AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehAcc, position, prevVelocity)
 
   local velocity_multiplier = math.floor(((vehAcc/1500) + 1)*100)/100
-	local damage_multiplier = math.floor((vehAcc/math.random(10,100))*100)/100
+	local damage_multiplier = math.floor((vehAcc/math.random(1,10))*100)/100
 	local damage_amount = 10 * velocity_multiplier
+	ApplyPedDamagePack(player, 'BigRunOverByVehicle', damage_amount, damage_multiplier)
 	SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
 	SetEntityVelocity(player, prevVelocity.x*velocity_multiplier, prevVelocity.y*velocity_multiplier, prevVelocity.z*velocity_multiplier)
-	ApplyPedDamagePack(player, 'BigRunOverByVehicle', damage_amount, damage_multiplier)
 	SetPedToRagdoll(player, 1000, 2000, 1, true, false, false)
 	DisableAllControlActions(0)
 	PlayPain(player, 7, 0, 0)
