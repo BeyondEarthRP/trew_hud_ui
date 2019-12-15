@@ -258,7 +258,7 @@ Citizen.CreateThread(function()
           local vehAcc = (prevSpeed - currSpeed) / GetFrameTime()
           if (vehIsMovingFwd and (prevSpeed > (seatbeltEjectSpeed/2.237)) and (vehAcc > (seatbeltEjectAccel*2.7))) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
 						 entFwdVector = GetEntityForwardVector(player)
-						 TriggerEvent('trew_hud_ui:ejectPedFromVehicle', player, vehAcc, position, entFwdVector, prevVelocity, prevRotationVelocity)
+						 TriggerEvent('trew_hud_ui:ejectPedFromVehicle', player, vehicle, vehAcc, position, entFwdVector, prevVelocity, prevRotationVelocity)
           else
             -- Update previous velocity for ejecting player
             prevVelocity = GetEntityVelocity(vehicle)
@@ -279,7 +279,7 @@ Citizen.CreateThread(function()
 				local vehAcc = (prevSpeed - currSpeed) / GetFrameTime()
 				if (vehIsMovingFwd and (prevSpeed > (seatbeltEjectSpeed/2.237)) and (vehAcc > (seatbeltEjectAccel*1.3))) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
 					entFwdVector = GetEntityForwardVector(player)
-					TriggerEvent('trew_hud_ui:ejectPedFromVehicle', player, vehAcc, position, entFwdVector, prevVelocity, prevRotationVelocity)
+					TriggerEvent('trew_hud_ui:ejectPedFromVehicle', player,  vehicle, vehAcc, position, entFwdVector, prevVelocity, prevRotationVelocity)
 				end
 			end
 
