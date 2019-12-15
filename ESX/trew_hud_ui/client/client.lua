@@ -150,7 +150,13 @@ AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehicle, veh
 	print("[fwdposition] x:" ..  fwdposition.x .. " y:" .. fwdposition.y .. " z:" .. fwdposition.z)
 	print("[prevVelocity] x:" ..  prevVelocity.x .. " y:" .. prevVelocity.y .. " z:" .. prevVelocity.z)
 	print("[prevRotationVelocity] x:" ..  prevRotationVelocity.x .. " y:" .. prevRotationVelocity.y .. " z:" .. prevRotationVelocity.z)
-
+  print("")
+	print("velocity_multiplier: " .. velocity_multiplier)
+	print("damage_multiplier: " .. damage_multiplier)
+	print("damage_impact: " .. damage_impact)
+	print("ejectionDamage: " .. ejectionDamage)
+	print("---------")
+	print("")
 
 	--[[ TO DO:
 	     -- WINDSHIELD NEEDS TO BREAK SOMEHOW
