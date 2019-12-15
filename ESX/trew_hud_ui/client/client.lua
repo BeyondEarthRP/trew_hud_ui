@@ -131,9 +131,11 @@ local seatbeltEjectAccel = 100.0
 local seatbeltIsOn = false
 local currSpeed = 0.0
 local prevVelocity = {x = 0.0, y = 0.0, z = 0.0}
+local prevRotationVelocity = {x = 0.0, y = 0.0, z = 0.0}
+local entFwdVector = {x = 0.0, y = 0.0, z = 0.0}
 
 -- Jay's vehicle ejections edit
-AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehAcc, position, prevVelocity)
+AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehAcc, position, prevVelocity, prevRotationVelocity)
 
   local velocity_multiplier = (math.floor(((vehAcc/1500) + 1)*100)/100)
 	local damage_multiplier = (math.floor((vehAcc/50)*100)/100) + 0.01
@@ -163,10 +165,6 @@ Citizen.CreateThread(function()
 		local position = GetEntityCoords(player)
 		local vehicleIsOn = GetIsVehicleEngineRunning(vehicle)
 		local vehicleInfo
-
-		setPlayerHudComponentVisible ( source, "health", false )
-		setPlayerHudComponentVisible ( source, "armour", false )
-		setPlayerHudComponentVisible ( source, "breath", false )
 
 		if IsPedInAnyVehicle(player, false) and vehicleIsOn then
 
@@ -252,10 +250,12 @@ Citizen.CreateThread(function()
         	local vehIsMovingFwd = GetEntitySpeedVector(vehicle, true).y > 1.0
           local vehAcc = (prevSpeed - currSpeed) / GetFrameTime()
           if (vehIsMovingFwd and (prevSpeed > (seatbeltEjectSpeed/2.237)) and (vehAcc > (seatbeltEjectAccel*2.7))) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
-						 TriggerEvent('trew_hud_ui:ejectPedFromVehicle', player, vehAcc, position, prevVelocity)
+						 entFwdVector = GetEntityForwardVector(player)
+						 TriggerEvent('trew_hud_ui:ejectPedFromVehicle', player, vehAcc, entFwdVector, prevVelocity)
           else
             -- Update previous velocity for ejecting player
             prevVelocity = GetEntityVelocity(vehicle)
+						prevRotationVelocity = GetEntityRotationVelocity(vehicle)
           end
         else
         	DisableControlAction(0, 75)
