@@ -137,7 +137,7 @@ local entFwdVector = {x = 0.0, y = 0.0, z = 0.0}
 -- Jay's vehicle ejections edit
 AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehicle, vehAcc, position, fwdposition, prevVelocity, prevRotationVelocity)
 
-  local velocity_multiplier = (math.floor(((vehAcc/1500) + 1)*100)/100)
+  local velocity_multiplier = (math.floor(((vehAcc/1300) + 1)*100)/100)
 	local damage_multiplier = (math.floor((vehAcc/50)*100)/100) + 0.01
 	local damage_impact = 5.1 * velocity_multiplier
 	local ejectionDamage = math.floor(damage_impact * damage_multiplier)
