@@ -135,7 +135,7 @@ local prevRotationVelocity = {x = 0.0, y = 0.0, z = 0.0}
 local entFwdVector = {x = 0.0, y = 0.0, z = 0.0}
 
 -- Jay's vehicle ejections edit
-AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehAcc, position, fwdposition, prevVelocity, prevRotationVelocity)
+AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehicle, vehAcc, position, fwdposition, prevVelocity, prevRotationVelocity)
 
   local velocity_multiplier = (math.floor(((vehAcc/1500) + 1)*100)/100)
 	local damage_multiplier = (math.floor((vehAcc/50)*100)/100) + 0.01
@@ -150,6 +150,7 @@ AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehAcc, posi
 	print("[fwdposition] x:" ..  fwdposition.x .. " y:" .. fwdposition.y .. " z:" .. fwdposition.z)
 	print("[prevVelocity] x:" ..  prevVelocity.x .. " y:" .. prevVelocity.y .. " z:" .. prevVelocity.z)
 	print("[prevRotationVelocity] x:" ..  prevRotationVelocity.x .. " y:" .. prevRotationVelocity.y .. " z:" .. prevRotationVelocity.z)
+  BreakEntityGlass(vehicle, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0. 0, true)
 	--SetEntityCoords(player, position.x + fwdposition.x, position.y + fwdposition.y, position.z + fwdposition.z - 0.47, true, true, true)
 	SetPedToRagdoll(player, 1000, 2000, 0, true, false, false)
 	--ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, false, false, true)
