@@ -147,7 +147,7 @@ AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehAcc, posi
 	ApplyPedDamagePack(player, 'BigRunOverByVehicle', damage_multiplier, damage_amount)
 	SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
 	SetPedToRagdoll(player, 1000, 2000, 0, true, false, false)
-	ApplyForceToEntity(player, 1, prevVelocity.x*velocity_multiplier, prevVelocity.y*velocity_multiplier, prevVelocity.z*(velocity_multiplier*-1), 0.0, 0.0, 0.0, 1, false, true, true, true, true)
+	ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 1, false, true, true, true, true)
 	ApplyDamageToPed(player, ejectionDamage, false)
 	SetEntityVelocity(player, prevVelocity.x*velocity_multiplier, prevVelocity.y*velocity_multiplier, prevVelocity.z*(velocity_multiplier*-1))
 	Citizen.Wait(50)
@@ -270,7 +270,7 @@ Citizen.CreateThread(function()
 				local vehIsMovingFwd = GetEntitySpeedVector(vehicle, true).y > 1.0
 				local vehAcc = (prevSpeed - currSpeed) / GetFrameTime()
 				if (vehIsMovingFwd and (prevSpeed > (seatbeltEjectSpeed/2.237)) and (vehAcc > (seatbeltEjectAccel*1.3))) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
-					TriggerEvent('trew_hud_ui:ejectPedFromVehicle', player, vehAcc, position, prevVelocity)
+					TriggerEvent('trew_hud_ui:ejectPedFromVehicle', player, vehAcc, entFwdVector, prevVelocity)
 				end
 			end
 
