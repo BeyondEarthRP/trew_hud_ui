@@ -166,7 +166,7 @@ AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehicle, veh
   ]]--
 
 	--[[ this all works below ]]--
-	SetEntityCoords(player, position.x - fwdposition.x, position.y - fwdposition.y, position.z - 0.47, true, true, true)
+	SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
 	SetPedToRagdoll(player, 1000, 2000, 0, true, false, false)
 	ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, false, false, true)
 	ApplyDamageToPed(player, ejectionDamage, false)
