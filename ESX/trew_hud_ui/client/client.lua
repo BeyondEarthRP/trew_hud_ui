@@ -154,7 +154,7 @@ AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehAcc, posi
 	SetPedToRagdoll(player, 1000, 2000, 0, true, false, false)
 	ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, false, false, true)
 	ApplyDamageToPed(player, ejectionDamage, false)
-	--SetEntityVelocity(player, prevVelocity.x*velocity_multiplier, prevVelocity.y*velocity_multiplier, prevVelocity.z*(velocity_multiplier*-1))
+	SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z)
 	Citizen.Wait(50)
 end)
 --------------------------------------------------------
