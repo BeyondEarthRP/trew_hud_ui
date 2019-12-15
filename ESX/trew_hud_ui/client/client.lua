@@ -150,14 +150,25 @@ AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehicle, veh
 	print("[fwdposition] x:" ..  fwdposition.x .. " y:" .. fwdposition.y .. " z:" .. fwdposition.z)
 	print("[prevVelocity] x:" ..  prevVelocity.x .. " y:" .. prevVelocity.y .. " z:" .. prevVelocity.z)
 	print("[prevRotationVelocity] x:" ..  prevRotationVelocity.x .. " y:" .. prevRotationVelocity.y .. " z:" .. prevRotationVelocity.z)
-	DetachVehicleWindscreen(vehicle)
+	PlaySoundFromEntity(vehicle, "FAMILY1_CAR_CRASH_BIG", l_BD7, 0, 0, 0)
+
+	--[[ TO DO:
+	     -- WINDSHIELD NEEDS TO BREAK SOMEHOW
+			 -- PROBABLY NEED MORE BLOOD
+			 -- A GLASS SHATTER SOUND WOULD ALSO BE COOL HERE
+
+	 TRYING TO BREAK THE WINDHSHIELD- BOO!
+	 \/
+	--this didn't work -->> DetachVehicleWindscreen(vehicle)
 	--this didn't work -->> BreakEntityGlass(vehicle, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, true, true)
+  ]]--
+
 	--[[ this all works below ]]--
-	--SetEntityCoords(player, position.x + fwdposition.x, position.y + fwdposition.y, position.z + fwdposition.z - 0.47, true, true, true)
+	SetEntityCoords(player, position.x + fwdposition.x, position.y + fwdposition.y, position.z + fwdposition.z - 0.47, true, true, true)
 	SetPedToRagdoll(player, 1000, 2000, 0, true, false, false)
-	--ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, false, false, true)
-	--ApplyDamageToPed(player, ejectionDamage, false)
-	--SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z)
+	ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, false, false, true)
+	ApplyDamageToPed(player, ejectionDamage, false)
+	SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z)
 	Citizen.Wait(50)
 end)
 --------------------------------------------------------
