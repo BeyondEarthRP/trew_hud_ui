@@ -150,11 +150,11 @@ AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehAcc, posi
 	print("[fwdposition] x:" ..  fwdposition.x .. " y:" .. fwdposition.y .. " z:" .. fwdposition.z)
 	print("[prevVelocity] x:" ..  prevVelocity.x .. " y:" .. prevVelocity.y .. " z:" .. prevVelocity.z)
 	print("[prevRotationVelocity] x:" ..  prevRotationVelocity.x .. " y:" .. prevRotationVelocity.y .. " z:" .. prevRotationVelocity.z)
-	SetEntityCoords(player, position.x+fwdposition.x, position.y+fwdposition.y, position.z+fwdposition.z - 0.47, true, true, true)
+	--SetEntityCoords(player, position.x + fwdposition.x, position.y + fwdposition.y, position.z + fwdposition.z - 0.47, true, true, true)
 	SetPedToRagdoll(player, 1000, 2000, 0, true, false, false)
-	ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, false, false, true)
-	ApplyDamageToPed(player, ejectionDamage, false)
-	SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z)
+	--ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, false, false, true)
+	--ApplyDamageToPed(player, ejectionDamage, false)
+	--SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z)
 	Citizen.Wait(50)
 end)
 --------------------------------------------------------
@@ -252,6 +252,7 @@ Citizen.CreateThread(function()
         SetPedConfigFlag(PlayerPedId(), 32, true)
 
         if not seatbeltIsOn then
+					SetPedConfigFlag(PlayerPedId(), 32, false)
         	local vehIsMovingFwd = GetEntitySpeedVector(vehicle, true).y > 1.0
           local vehAcc = (prevSpeed - currSpeed) / GetFrameTime()
           if (vehIsMovingFwd and (prevSpeed > (seatbeltEjectSpeed/2.237)) and (vehAcc > (seatbeltEjectAccel*2.7))) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
@@ -263,7 +264,8 @@ Citizen.CreateThread(function()
 						prevRotationVelocity = GetEntityRotationVelocity(vehicle)
           end
         else
-        	DisableControlAction(0, 75)
+					SetPedConfigFlag(PlayerPedId(), 32, true)
+					DisableControlAction(0, 75)
         end
 			elseif has_value(vehiclesCars, vehicleClass) == true and vehicleClass == 8 then
 
