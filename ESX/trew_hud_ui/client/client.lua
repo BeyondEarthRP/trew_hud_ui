@@ -163,6 +163,10 @@ Citizen.CreateThread(function()
 		local vehicleIsOn = GetIsVehicleEngineRunning(vehicle)
 		local vehicleInfo
 
+		setPlayerHudComponentVisible ( source, "health", false )
+		setPlayerHudComponentVisible ( source, "armour", false )
+		setPlayerHudComponentVisible ( source, "breath", false )
+
 		if IsPedInAnyVehicle(player, false) and vehicleIsOn then
 
 
