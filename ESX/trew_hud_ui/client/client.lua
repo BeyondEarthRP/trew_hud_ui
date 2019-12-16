@@ -117,7 +117,7 @@ end)
 -- Vehicle Info
 local vehicleCruiser
 local vehicleSignalIndicator = 'off'
-local seatbeltEjectSpeed = 45.0
+local seatbeltEjectSpeed = 28.0
 local seatbeltEjectAccel = 100.0
 local seatbeltIsOn = false
 local currSpeed = 0.0
