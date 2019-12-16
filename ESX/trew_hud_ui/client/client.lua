@@ -128,14 +128,17 @@ local isBlackedOut = false
 
 -- Jay's vehicle ejections edit
 local function ejectPedFromVehicle(player, vehicle, impact, position, fwdposition, prevVelocity, prevRotationVelocity)
+	SetFollowVehicleCamViewMode(4) -- Force first person view in the car to increase the blinking wakening and blinking effect
+	TriggerServerEvent('InteractSound_CL:PlayWithinDistance', 50.0, 'crash01', 0.5) -- Trigger crash sound around yourself, works with InteractiveSound
+
 	local velocity_multiplier = (math.floor(((impact/1500) + 1)*100)/100)
 	local damage_multiplier = (math.floor((impact/50)*100)/100) + 0.01
 	local damage_impact = 5.1 * velocity_multiplier
 	local ejectionDamage = math.floor(damage_impact * damage_multiplier)
+
 	impact = math.floor(impact)
 	DisableAllControlActions(0)
-SetFollowVehicleCamViewMode(4) -- Force first person view in the car to increase the blinking wakening and blinking effect
-	TriggerServerEvent('InteractSound_CL:PlayWithinDistance', 50.0, 'crash01', 0.5) -- Trigger crash sound around yourself, works with InteractiveSound
+
 	if impact/100 <= 50 then -- Shakycam on impact
 		ShakeGameplayCam('SMALL_EXPLOSION_SHAKE', 0.4)
 	elseif impact/100 > 50 and impact <= 60 then
@@ -147,6 +150,7 @@ SetFollowVehicleCamViewMode(4) -- Force first person view in the car to increase
 	else
 		ShakeGameplayCam('LARGE_EXPLOSION_SHAKE', 1.5)
 	end
+
 	SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
 	if not isBlackedOut then
 		isBlackedOut = true
@@ -158,13 +162,13 @@ SetFollowVehicleCamViewMode(4) -- Force first person view in the car to increase
 	print("PLAYER HEALTH: " .. GetEntityHealth(player))
 	print("ejectionDamage: " .. ejectionDamage)
 	print("Health would be: " .. (GetEntityHealth(player) - ejectionDamage))
+	StartScreenEffect("DrugsDrivingOut",4000,false)
 	ApplyDamageToPed(player, ejectionDamage*2, false)
 	Citizen.Wait(impact*2)
 	SetPedToRagdoll(player, impact*impact, impact*impact, 0, true, false, false)
-	DoScreenFadeIn(impact*impact)
+	DoScreenFadeIn(impact*(impact/2))
 	if not IsEntityDead(GetPlayerPed(-1)) and isBlackedOut then
-		StartScreenEffect("DrugsDrivingOut",4000,false)
-		SetPedMovementClipset(GetPlayerPed(-1), "MOVE_M@DRUNK@VERYDRUNK", 1.0) -- Set the injured ped move, best one is verydrunk in my opinion.
+		SetPedMovementClipset(player, "MOVE_M@DRUNK@VERYDRUNK", 1.0) -- Set the injured ped move, best one is verydrunk in my opinion.
 		Citizen.Wait(200)
 		DoScreenFadeOut(1600) -- Blinking effect
 		SetPedToRagdoll(player, 1000, 1000, 0, true, false, false)
@@ -183,44 +187,11 @@ SetFollowVehicleCamViewMode(4) -- Force first person view in the car to increase
 		DoScreenFadeOut(700)
 		Citizen.Wait(700)
 		DoScreenFadeIn(600)
-		ResetPedMovementClipset(GetPlayerPed(-1))
-		ResetPedWeaponMovementClipset(GetPlayerPed(-1))
-		ResetPedStrafeClipset(GetPlayerPed(-1))
 	end
-
+	ResetPedMovementClipset(GetPlayerPed(-1))
+	ResetPedWeaponMovementClipset(GetPlayerPed(-1))
+	ResetPedStrafeClipset(GetPlayerPed(-1))
 	Citizen.Wait(50)
-
-	if impact <= 500 and not IsEntityDead(GetPlayerPed(-1)) then -- Smooth exit, duration depending on impact speed, again
-		StartScreenEffect("DrugsDrivingOut",1000,false)
-		Citizen.Wait(1200)
-		ResetPedMovementClipset(GetPlayerPed(-1))
-		ResetPedWeaponMovementClipset(GetPlayerPed(-1))
-		ResetPedStrafeClipset(GetPlayerPed(-1))
-	elseif impact > 500 and impact <= 60 then
-		StartScreenEffect("DrugsDrivingOut",4000,false)
-		Citizen.Wait(4200)
-		ResetPedMovementClipset(GetPlayerPed(-1))
-		ResetPedWeaponMovementClipset(GetPlayerPed(-1))
-		ResetPedStrafeClipset(GetPlayerPed(-1))
-	elseif impact > 600 and impact <= 70 then
-		StartScreenEffect("DrugsDrivingOut",8000,false)
-		Citizen.Wait(8200)
-		ResetPedMovementClipset(GetPlayerPed(-1))
-		ResetPedWeaponMovementClipset(GetPlayerPed(-1))
-		ResetPedStrafeClipset(GetPlayerPed(-1))
-	elseif impact > 700 and impact <= 80 then
-		StartScreenEffect("DrugsDrivingOut",10000,false)
-		Citizen.Wait(10200)
-		ResetPedMovementClipset(GetPlayerPed(-1))
-		ResetPedWeaponMovementClipset(GetPlayerPed(-1))
-		ResetPedStrafeClipset(GetPlayerPed(-1))
-	else
-		StartScreenEffect("DrugsDrivingOut",20000,false)
-		Citizen.Wait(20200)
-		ResetPedMovementClipset(GetPlayerPed(-1))
-		ResetPedWeaponMovementClipset(GetPlayerPed(-1))
-		ResetPedStrafeClipset(GetPlayerPed(-1))
-	end
 
 	print("[position] x:" ..  position.x .. " y:" .. position.y .. " z:" .. position.z)
 	print("[fwdposition] x:" ..  fwdposition.x .. " y:" .. fwdposition.y .. " z:" .. fwdposition.z)
