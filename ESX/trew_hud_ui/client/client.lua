@@ -143,6 +143,7 @@ AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehicle, veh
 	local ejectionDamage = math.floor(damage_impact * damage_multiplier)
 
 	DisableAllControlActions(0)
+	RenderFirstPersonCam(1, 0, 3)
 
 	print("[position] x:" ..  position.x .. " y:" .. position.y .. " z:" .. position.z)
 	print("[fwdposition] x:" ..  fwdposition.x .. " y:" .. fwdposition.y .. " z:" .. fwdposition.z)
@@ -171,11 +172,11 @@ AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehicle, veh
 
 	--[[ this works below ]]--
 	PlayPain(player, 7, 0, 0)
-	ApplyPedDamagePack(player, 'BigRunOverByVehicle', ejectionDamage, damage_impact)
-	ShakeGameplayCam("SMALL_EXPLOSION_SHAKE", 1.0)
+	ApplyPedDamagePack(player, 'BigRunOverByVehicle', ejectionDamage, 2)
+	ShakeGameplayCam("JOLT_SHAKE", damage_impact)
 
   --[testing this]--
-	StartParticleFxNonLoopedOnEntity('glass_windscreen', vehicle, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z,  1.0, false, false, false)
+	StartParticleFxNonLoopedOnEntity('glass_windscreen', player, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z,  1.0, false, false, false)
 	StartParticleFxNonLoopedOnEntity('ptfx_blood_spray', player, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z,  1.0, false, false, false)
 
 	--[continue what is already working]--
@@ -185,6 +186,7 @@ AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehicle, veh
 	ApplyDamageToPed(player, ejectionDamage, false)
 	SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z * -1.5)
 	Citizen.Wait(50)
+	RenderFirstPersonCam(0, 0, 3)
 end)
 --------------------------------------------------------
 
