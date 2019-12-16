@@ -152,35 +152,37 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 			end
 		end
 		SetPedMovementClipset(GetPlayerPed(-1), "MOVE_M@DRUNK@VERYDRUNK", 1.0) -- Set the injured ped move, best one is verydrunk in my opinion.
-		DoScreenFadeIn(1800) -- Blinking effect
-		Citizen.Wait(200)
-		DoScreenFadeOut(1600)
-		Citizen.Wait(1800)
-		DoScreenFadeIn(1400)
-		Citizen.Wait(1600)
-		DoScreenFadeOut(1100)
-		isBlackedOut = false -- Release controls to the player after 2 blinks (added a disable camera mode to force FPS and a disable multiplayer talking)
-		Citizen.Wait(1100)
-		DoScreenFadeIn(1000)
-		Citizen.Wait(1200)
-		DoScreenFadeOut(900)
-		Citizen.Wait(900)
-		DoScreenFadeIn(800)
-		Citizen.Wait(1000)
-		DoScreenFadeOut(700)
-		Citizen.Wait(700)
-		DoScreenFadeIn(600)
-
-		if impact <= 50 then -- Injured visual effect duration, depending on impact speed
-			Citizen.Wait(100)
-		elseif impact > 50 and impact <= 60 then
-			Citizen.Wait(500)
-		elseif impact > 60 and impact <= 70 then
+		if not playerStatus.isdead then
+			DoScreenFadeIn(1800) -- Blinking effect
+			Citizen.Wait(200)
+			DoScreenFadeOut(1600)
+			Citizen.Wait(1800)
+			DoScreenFadeIn(1400)
+			Citizen.Wait(1600)
+			DoScreenFadeOut(1100)
+			isBlackedOut = false -- Release controls to the player after 2 blinks (added a disable camera mode to force FPS and a disable multiplayer talking)
+			Citizen.Wait(1100)
+			DoScreenFadeIn(1000)
+			Citizen.Wait(1200)
+			DoScreenFadeOut(900)
+			Citizen.Wait(900)
+			DoScreenFadeIn(800)
 			Citizen.Wait(1000)
-		elseif impact > 70 and impact <= 80 then
-			Citizen.Wait(1500)
-		else
-			Citizen.Wait(2300)
+			DoScreenFadeOut(700)
+			Citizen.Wait(700)
+			DoScreenFadeIn(600)
+
+			if impact <= 50 then -- Injured visual effect duration, depending on impact speed
+				Citizen.Wait(100)
+			elseif impact > 50 and impact <= 60 then
+				Citizen.Wait(500)
+			elseif impact > 60 and impact <= 70 then
+				Citizen.Wait(1000)
+			elseif impact > 70 and impact <= 80 then
+				Citizen.Wait(1500)
+			else
+				Citizen.Wait(2300)
+			end
 		end
 	end
 
@@ -259,6 +261,7 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 end
 
 local function blackout(player, impact)
+	impact = impact / 100 -- Before math, this number will be around 500 - 800 ... /100 puts it back on track.
 	-- Only blackout once to prevent an extended blackout if both speed and damage thresholds were met
 	if not isBlackedOut then
 		isBlackedOut = true
@@ -282,7 +285,7 @@ local function blackout(player, impact)
 			--SetEntityHealth(GetPlayerPed(-1), 0)
 
 			Citizen.Wait(200)
-			DoScreenFadeOut(100)
+			DoScreenFadeOut(impact * 100)
 
 			-- HERE IS AN ATTEMPT TO PLAY A LAYING ON THE STEERING WHEEL ANIMATION -> Ped disapears, don't know why
 			-- while (not HasAnimDictLoaded("veh@std@ds@base")) do
