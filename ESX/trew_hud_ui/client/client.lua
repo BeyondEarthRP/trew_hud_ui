@@ -483,7 +483,7 @@ Citizen.CreateThread(function()
 					if (prevSpeed - currSpeed) > 10 then
 						print("--------------------------------------------------------------")
 						print("vehIsMovingFwd: " .. tostring(vehIsMovingFwd))
-						print("(prevSpeed > seatbeltEjectSpeed): " .. tostring((prevSpeed > (seatbeltEjectSpeed)))
+						print("prevSpeed > seatbeltEjectSpeed: " .. tostring(prevSpeed > seatbeltEjectSpeed))
 						print("")
 						print("prevSpeed: " .. prevSpeed)
 						print("currSpeed: " .. currSpeed)
