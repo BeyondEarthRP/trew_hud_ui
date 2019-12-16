@@ -139,9 +139,7 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 	SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
 	SetPedToRagdoll(player, 1000, 2000, 0, true, false, false)
 	ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, false, false, true)
-	ApplyDamageToPed(player, ejectionDamage, false)
 	SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z * -1.5)
-	Citizen.Wait(200)
 	if not isBlackedOut then
 		isBlackedOut = true
 		DoScreenFadeOut(ejectionDamage*(damage_impact/2))
@@ -151,6 +149,7 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 				Citizen.Wait(0)
 			end
 		end
+		ApplyDamageToPed(player, ejectionDamage, false)
 		SetPedMovementClipset(GetPlayerPed(-1), "MOVE_M@DRUNK@VERYDRUNK", 1.0) -- Set the injured ped move, best one is verydrunk in my opinion.
 		if not IsEntityDead(GetPlayerPed(-1)) then
 			DoScreenFadeIn(1800) -- Blinking effect
