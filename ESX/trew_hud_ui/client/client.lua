@@ -132,25 +132,20 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 	local damage_multiplier = (math.floor((impact/50)*100)/100) + 0.01
 	local damage_impact = 5.1 * velocity_multiplier
 	local ejectionDamage = math.floor(damage_impact * damage_multiplier)
+	impact = math.floor(impact)
 	DisableAllControlActions(0)
 	SetFollowVehicleCamViewMode(4) -- Force first person view in the car to increase the blinking wakening and blinking effect
 	SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
 	ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, false, false, true)
 	SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z * -1.5)
-	SetPedToRagdoll(player, 3000, 3000, 0, true, false, false)
-	Citizen.Wait(math.floor(impact))
+	SetPedToRagdoll(player, 2000, 4000, 0, false, false, false)
+	Citizen.Wait(impact*2)
 	if not isBlackedOut then
 		isBlackedOut = true
 		DoScreenFadeOut(100)
-		Citizen.Wait(math.floor(impact))
+		Citizen.Wait(impact*2)
 		ApplyDamageToPed(player, ejectionDamage, false)
 		if not IsEntityDead(GetPlayerPed(-1)) then
-			if not HasAnimSetLoaded("MOVE_M@DRUNK@VERYDRUNK") then -- move_m@injured or MOVE_M@DRUNK@VERYDRUNK or move_injured_generic
-				RequestAnimSet("MOVE_M@DRUNK@VERYDRUNK")
-				while not HasAnimSetLoaded("MOVE_M@DRUNK@VERYDRUNK") do
-					Citizen.Wait(0)
-				end
-			end
 			StopScreenEffect("DrugsDrivingIn") -- Stop the injured effect to introduce the smooth injured effect exit
 			Citizen.Wait(100)
 			SetPedMovementClipset(GetPlayerPed(-1), "MOVE_M@DRUNK@VERYDRUNK", 1.0) -- Set the injured ped move, best one is verydrunk in my opinion.
@@ -172,18 +167,6 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 			DoScreenFadeOut(700)
 			Citizen.Wait(700)
 			DoScreenFadeIn(600)
-
-			if impact <= 500 then -- Injured visual effect duration, depending on impact speed
-				Citizen.Wait(100)
-			elseif impact > 500 and impact <= 60 then
-				Citizen.Wait(500)
-			elseif impact > 600 and impact <= 70 then
-				Citizen.Wait(1000)
-			elseif impact > 700 and impact <= 80 then
-				Citizen.Wait(1500)
-			else
-				Citizen.Wait(2300)
-			end
 		end
 	end
 
