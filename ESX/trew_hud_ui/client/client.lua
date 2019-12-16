@@ -174,7 +174,7 @@ AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehicle, veh
 	--PlayPain(player, 7, 0, 0)
 	--ApplyPedDamagePack(player, 'BigRunOverByVehicle', ejectionDamage, 2)
 	ShakeGameplayCam("JOLT_SHAKE", damage_impact)
-	RenderFirstPersonCam(true, 1.0, 3)
+	--RenderFirstPersonCam(true, 1.0, 3)
 
   --[testing this]--
 	--StartParticleFxNonLoopedOnEntity('glass_windscreen', player, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z,  1.0, false, false, false)
