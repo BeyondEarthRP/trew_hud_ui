@@ -166,7 +166,7 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 	ApplyDamageToPed(player, ejectionDamage*2, false)
 	Citizen.Wait(impact*2)
 	SetPedToRagdoll(player, impact*impact, impact*impact, 0, true, false, false)
-	DoScreenFadeIn(impact*(impact/2))
+	DoScreenFadeIn(impact*2)
 	if not IsEntityDead(GetPlayerPed(-1)) and isBlackedOut then
 		SetPedMovementClipset(player, "MOVE_M@DRUNK@VERYDRUNK", 1.0) -- Set the injured ped move, best one is verydrunk in my opinion.
 		Citizen.Wait(200)
