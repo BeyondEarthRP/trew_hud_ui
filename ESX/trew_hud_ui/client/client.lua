@@ -138,20 +138,24 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 	SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
 	ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, false, false, true)
 	SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z * -1.5)
-	SetPedToRagdoll(player, 2000, 4000, 0, false, false, false)
-	Citizen.Wait(impact*2)
+	SetPedToRagdoll(player, 1000, 2000, 1, true, false, false)
+	Citizen.Wait(impact)
+	SetPedToRagdoll(player, 1000, 2000, 1, true, false, false)
 	if not isBlackedOut then
 		isBlackedOut = true
 		DoScreenFadeOut(100)
 		Citizen.Wait(impact*2)
-		ApplyDamageToPed(player, ejectionDamage, false)
+		print("PLAYER HEALTH: " .. GetEntityHealth(player))
+		print("ejectionDamage: " .. ejectionDamage)
+		print("Health would be: " .. (GetEntityHealth(player) - ejectionDamage))
+		--ApplyDamageToPed(player, ejectionDamage, false)
 		if not IsEntityDead(GetPlayerPed(-1)) then
-			StopScreenEffect("DrugsDrivingIn") -- Stop the injured effect to introduce the smooth injured effect exit
-			Citizen.Wait(100)
-			SetPedMovementClipset(GetPlayerPed(-1), "MOVE_M@DRUNK@VERYDRUNK", 1.0) -- Set the injured ped move, best one is verydrunk in my opinion.
 			DoScreenFadeIn(1800) -- Blinking effect
+			StartScreenEffect("DrugsDrivingOut",4000,false)
+			SetPedMovementClipset(GetPlayerPed(-1), "MOVE_M@DRUNK@VERYDRUNK", 1.0) -- Set the injured ped move, best one is verydrunk in my opinion.
 			Citizen.Wait(200)
 			DoScreenFadeOut(1600)
+			SetPedToRagdoll(player, 1000, 2000, 1, true, false, false)
 			Citizen.Wait(1800)
 			DoScreenFadeIn(1400)
 			Citizen.Wait(1600)
@@ -167,6 +171,9 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 			DoScreenFadeOut(700)
 			Citizen.Wait(700)
 			DoScreenFadeIn(600)
+			ResetPedMovementClipset(GetPlayerPed(-1))
+			ResetPedWeaponMovementClipset(GetPlayerPed(-1))
+			ResetPedStrafeClipset(GetPlayerPed(-1))
 		end
 	end
 
