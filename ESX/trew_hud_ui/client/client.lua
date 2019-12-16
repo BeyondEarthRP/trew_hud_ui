@@ -132,12 +132,11 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 	local damage_multiplier = (math.floor((impact/50)*100)/100) + 0.01
 	local damage_impact = 5.1 * velocity_multiplier
 	local ejectionDamage = math.floor(damage_impact * damage_multiplier)
-
 	DisableAllControlActions(0)
 	SetFollowVehicleCamViewMode(4) -- Force first person view in the car to increase the blinking wakening and blinking effect
-	StopScreenEffect("DrugsDrivingIn") -- Stop the injured effect to introduce the smooth injured effect exit
-	SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
 	SetPedToRagdoll(player, 1000, 2000, 0, true, false, false)
+	ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, false, false, true)
+	SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
 	ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, false, false, true)
 	SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z * -1.5)
 	if not isBlackedOut then
@@ -149,6 +148,7 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 				Citizen.Wait(0)
 			end
 		end
+		StopScreenEffect("DrugsDrivingIn") -- Stop the injured effect to introduce the smooth injured effect exit
 		ApplyDamageToPed(player, ejectionDamage, false)
 		SetPedMovementClipset(GetPlayerPed(-1), "MOVE_M@DRUNK@VERYDRUNK", 1.0) -- Set the injured ped move, best one is verydrunk in my opinion.
 		if not IsEntityDead(GetPlayerPed(-1)) then
@@ -526,7 +526,7 @@ Citizen.CreateThread(function()
 						print("")
 						print("prevSpeed: " .. prevSpeed)
 						print("currSpeed: " .. currSpeed)
-						print("prevSpeed - currSpeed = " .. (prevSpeed - currSpeed))
+						print("(seatbeltEjectAccel*7.1) = " .. impact > (seatbeltEjectAccel*7.1))
 						print("is this greater than " .. Config.BlackoutSpeedRequired)
 						print("((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired): " .. tostring(((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired)))
 						print("")
