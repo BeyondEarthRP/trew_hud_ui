@@ -134,24 +134,15 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 	local ejectionDamage = math.floor(damage_impact * damage_multiplier)
 	DisableAllControlActions(0)
 	SetFollowVehicleCamViewMode(4) -- Force first person view in the car to increase the blinking wakening and blinking effect
-	DoScreenFadeOut(20)
-	Citizen.Wait(14)
-	DoScreenFadeIn(80)
-	Citizen.Wait(23)
-	DoScreenFadeOut(10)
-	Citizen.Wait(13)
-	DoScreenFadeIn(30)
-	ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, false, false, true)
 	SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
+	ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, false, false, true)
 	SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z * -1.5)
 	SetPedToRagdoll(player, 1000, 1000, 0, true, false, false)
-	Citizen.Wait(10)
-	ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, false, false, true)
 	Citizen.Wait(10)
 	if not isBlackedOut then
 		isBlackedOut = true
 		DoScreenFadeOut(100)
-		Citizen.Wait(impact*3)
+		Citizen.Wait(math.floor(impact*2))
 		ApplyDamageToPed(player, ejectionDamage, false)
 		if not IsEntityDead(GetPlayerPed(-1)) then
 			if not HasAnimSetLoaded("MOVE_M@DRUNK@VERYDRUNK") then -- move_m@injured or MOVE_M@DRUNK@VERYDRUNK or move_injured_generic
@@ -267,7 +258,6 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 	--SetPedMovementClipset(player, 'move_injured_generic', 1.0)
 	--DID NOT WORK--> BreakEntityGlass(vehicle, position.x, position.y, position.z, 1, fwdposition.x, fwdposition.y, fwdposition.z, 0, 1, 1)
 	--[continue what is already working]--
-
 end
 
 local function blackout(player, impact)
