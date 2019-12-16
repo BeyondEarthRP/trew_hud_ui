@@ -135,14 +135,15 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 
 	DisableAllControlActions(0)
 	SetFollowVehicleCamViewMode(4) -- Force first person view in the car to increase the blinking wakening and blinking effect
+	TriggerServerEvent('InteractSound_CL:PlayWithinDistance', 50.0, 'crash01', 0.5) -- Trigger crash sound around yourself, works with InteractiveSound
 	StopScreenEffect("DrugsDrivingIn") -- Stop the injured effect to introduce the smooth injured effect exit
+	if not isBlackedOut then
+		isBlackedOut = true
+		DoScreenFadeOut(100)
 	SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
 	SetPedToRagdoll(player, 1000, 2000, 0, true, false, false)
 	ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, false, false, true)
 	SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z * -1.5)
-	if not isBlackedOut then
-		isBlackedOut = true
-		DoScreenFadeOut(ejectionDamage*(damage_impact/2))
 		if not HasAnimSetLoaded("MOVE_M@DRUNK@VERYDRUNK") then -- move_m@injured or MOVE_M@DRUNK@VERYDRUNK or move_injured_generic
 			RequestAnimSet("MOVE_M@DRUNK@VERYDRUNK")
 			while not HasAnimSetLoaded("MOVE_M@DRUNK@VERYDRUNK") do
