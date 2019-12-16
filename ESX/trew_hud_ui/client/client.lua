@@ -492,10 +492,13 @@ Citizen.CreateThread(function()
         if not seatbeltIsOn then
 					print("the seatbelt is off")
           if vehIsMovingFwd and (prevSpeed > (seatbeltEjectSpeed)) and (impact > (seatbeltEjectAccel*3.7)) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
+						print(impact .. "IMPACT!!!!!!")
 						entFwdVector = GetEntityForwardVector(player)
 						if (impact > (seatbeltEjectAccel*5.1)) then
+							print("greater than " .. (seatbeltEjectAccel*5.1) .. "blacked out...")
 							blackout(player, impact)
 						end
+						print("... and ejected...")
 						ejectPedFromVehicle(player, vehicle, impact, position, entFwdVector, prevVelocity, prevRotationVelocity)
           else
               -- Update previous velocity for ejecting player
@@ -507,8 +510,11 @@ Citizen.CreateThread(function()
 					SetPedConfigFlag(PlayerPedId(), 32, true)
 					DisableControlAction(0, 75)
 					if (not isBlackedOut) and vehIsMovingFwd and (currSpeed < prevSpeed) and ((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired) then
-						print("IMPACT!!!!!!")
-						blackout(player, impact)
+						print(impact .. "IMPACT!!!!!!")
+						if (impact > (seatbeltEjectAccel*7.1)) then
+							print("greater than " .. (seatbeltEjectAccel*7.1) .. "blacked out...")
+							blackout(player, impact)
+						end
 					else
 						-- Update previous velocity for ejecting player
 						prevVelocity = GetEntityVelocity(vehicle)
