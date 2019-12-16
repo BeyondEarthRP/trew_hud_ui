@@ -36,8 +36,7 @@ local vehiclesCars = {0,1,2,3,4,5,6,7,8,9,10,11,12,17,18,19,20};
 
 -- Hides TREW UI when it's on Pause Menu
 Citizen.CreateThread(function()
-
-    local isPauseMenu = false
+  local isPauseMenu = false
 
 	while true do
 		Citizen.Wait(0)
@@ -65,15 +64,8 @@ Citizen.CreateThread(function()
 			HideHudComponentThisFrame(17) -- Save Game
 			HideHudComponentThisFrame(20) -- Weapon Stats
 		end
-
-
 	end
 end)
-
-
-
-
-
 
 -- Date and time update
 Citizen.CreateThread(function()
@@ -91,7 +83,6 @@ end)
 
 -- Location update
 Citizen.CreateThread(function()
-
 	while true do
 		Citizen.Wait(100)
 
@@ -137,132 +128,131 @@ local isBlackedOut = false
 
 -- Jay's vehicle ejections edit
 local function ejectPedFromVehicle(player, vehicle, impact, position, fwdposition, prevVelocity, prevRotationVelocity)
+	local velocity_multiplier = (math.floor(((impact/1500) + 1)*100)/100)
+	local damage_multiplier = (math.floor((impact/50)*100)/100) + 0.01
+	local damage_impact = 5.1 * velocity_multiplier
+	local ejectionDamage = math.floor(damage_impact * damage_multiplier)
 
-	  local velocity_multiplier = (math.floor(((impact/1500) + 1)*100)/100)
-		local damage_multiplier = (math.floor((impact/50)*100)/100) + 0.01
-		local damage_impact = 5.1 * velocity_multiplier
-		local ejectionDamage = math.floor(damage_impact * damage_multiplier)
-
-		DisableAllControlActions(0)
-		SetFollowVehicleCamViewMode(4) -- Force first person view in the car to increase the blinking wakening and blinking effect
-		Citizen.Wait(200)
-  	if not isBlackedOut then
-				DoScreenFadeOut(ejectionDamage*damage_impact)
-				if not HasAnimSetLoaded("MOVE_M@DRUNK@VERYDRUNK") then -- move_m@injured or MOVE_M@DRUNK@VERYDRUNK or move_injured_generic
-						RequestAnimSet("MOVE_M@DRUNK@VERYDRUNK")
-						while not HasAnimSetLoaded("MOVE_M@DRUNK@VERYDRUNK") do
-								Citizen.Wait(0)
-						end
-				end
-				SetPedMovementClipset(GetPlayerPed(-1), "MOVE_M@DRUNK@VERYDRUNK", 1.0) -- Set the injured ped move, best one is verydrunk in my opinion.
-				DoScreenFadeIn(1800) -- Blinking effect
-				Citizen.Wait(2000)
-				DoScreenFadeOut(1600)
-				Citizen.Wait(1800)
-				DoScreenFadeIn(1400)
-				Citizen.Wait(1600)
-				DoScreenFadeOut(1100)
-				isBlackedOut = false -- Release controls to the player after 2 blinks (added a disable camera mode to force FPS and a disable multiplayer talking)
-				Citizen.Wait(1100)
-				DoScreenFadeIn(1000)
-				Citizen.Wait(1200)
-				DoScreenFadeOut(900)
-				Citizen.Wait(900)
-				DoScreenFadeIn(800)
-				Citizen.Wait(1000)
-				DoScreenFadeOut(700)
-				Citizen.Wait(700)
-				DoScreenFadeIn(600)
-
-				if impact <= 50 then -- Injured visual effect duration, depending on impact speed
-					Citizen.Wait(1000)
-				elseif impact > 50 and impact <= 60 then
-					Citizen.Wait(5000)
-				elseif impact > 60 and impact <= 70 then
-					Citizen.Wait(10000)
-				elseif impact > 70 and impact <= 80 then
-					Citizen.Wait(15000)
-				else
-					Citizen.Wait(23000)
-				end
-
-				StopScreenEffect("DrugsDrivingIn") -- Stop the injured effect to introduce the smooth injured effect exit
-
-				if impact <= 50 then -- Smooth exit, duration depending on impact speed, again
-						StartScreenEffect("DrugsDrivingOut",1000,false)
-						Citizen.Wait(1200)
-						ResetPedMovementClipset(GetPlayerPed(-1))
-						ResetPedWeaponMovementClipset(GetPlayerPed(-1))
-						ResetPedStrafeClipset(GetPlayerPed(-1))
-				elseif impact > 50 and impact <= 60 then
-						StartScreenEffect("DrugsDrivingOut",4000,false)
-						Citizen.Wait(4200)
-						ResetPedMovementClipset(GetPlayerPed(-1))
-						ResetPedWeaponMovementClipset(GetPlayerPed(-1))
-						ResetPedStrafeClipset(GetPlayerPed(-1))
-				elseif impact > 60 and impact <= 70 then
-						StartScreenEffect("DrugsDrivingOut",8000,false)
-						Citizen.Wait(8200)
-						ResetPedMovementClipset(GetPlayerPed(-1))
-						ResetPedWeaponMovementClipset(GetPlayerPed(-1))
-						ResetPedStrafeClipset(GetPlayerPed(-1))
-				elseif impact > 70 and impact <= 80 then
-						StartScreenEffect("DrugsDrivingOut",10000,false)
-						Citizen.Wait(10200)
-						ResetPedMovementClipset(GetPlayerPed(-1))
-						ResetPedWeaponMovementClipset(GetPlayerPed(-1))
-						ResetPedStrafeClipset(GetPlayerPed(-1))
-				else
-						StartScreenEffect("DrugsDrivingOut",20000,false)
-						Citizen.Wait(20200)
-						ResetPedMovementClipset(GetPlayerPed(-1))
-						ResetPedWeaponMovementClipset(GetPlayerPed(-1))
-						ResetPedStrafeClipset(GetPlayerPed(-1))
-				end
+	DisableAllControlActions(0)
+	SetFollowVehicleCamViewMode(4) -- Force first person view in the car to increase the blinking wakening and blinking effect
+	Citizen.Wait(200)
+	if not isBlackedOut then
+		DoScreenFadeOut(ejectionDamage*damage_impact)
+		if not HasAnimSetLoaded("MOVE_M@DRUNK@VERYDRUNK") then -- move_m@injured or MOVE_M@DRUNK@VERYDRUNK or move_injured_generic
+			RequestAnimSet("MOVE_M@DRUNK@VERYDRUNK")
+			while not HasAnimSetLoaded("MOVE_M@DRUNK@VERYDRUNK") do
+				Citizen.Wait(0)
+			end
 		end
-		print("[position] x:" ..  position.x .. " y:" .. position.y .. " z:" .. position.z)
-		print("[fwdposition] x:" ..  fwdposition.x .. " y:" .. fwdposition.y .. " z:" .. fwdposition.z)
-		print("[prevVelocity] x:" ..  prevVelocity.x .. " y:" .. prevVelocity.y .. " z:" .. prevVelocity.z)
-		print("[prevRotationVelocity] x:" ..  prevRotationVelocity.x .. " y:" .. prevRotationVelocity.y .. " z:" .. prevRotationVelocity.z)
-	  print("")
-		print("velocity_multiplier: " .. velocity_multiplier)
-		print("damage_multiplier: " .. damage_multiplier)
-		print("damage_impact: " .. damage_impact)
-		print("ejectionDamage: " .. ejectionDamage)
-		print("---------")
-		print("")
+		SetPedMovementClipset(GetPlayerPed(-1), "MOVE_M@DRUNK@VERYDRUNK", 1.0) -- Set the injured ped move, best one is verydrunk in my opinion.
+		DoScreenFadeIn(1800) -- Blinking effect
+		Citizen.Wait(2000)
+		DoScreenFadeOut(1600)
+		Citizen.Wait(1800)
+		DoScreenFadeIn(1400)
+		Citizen.Wait(1600)
+		DoScreenFadeOut(1100)
+		isBlackedOut = false -- Release controls to the player after 2 blinks (added a disable camera mode to force FPS and a disable multiplayer talking)
+		Citizen.Wait(1100)
+		DoScreenFadeIn(1000)
+		Citizen.Wait(1200)
+		DoScreenFadeOut(900)
+		Citizen.Wait(900)
+		DoScreenFadeIn(800)
+		Citizen.Wait(1000)
+		DoScreenFadeOut(700)
+		Citizen.Wait(700)
+		DoScreenFadeIn(600)
 
-		--[[ TO DO:
-		     -- WINDSHIELD NEEDS TO BREAK SOMEHOW
-				 -- PROBABLY NEED MORE BLOOD
-				 -- A GLASS SHATTER SOUND WOULD ALSO BE COOL HERE
+		if impact <= 50 then -- Injured visual effect duration, depending on impact speed
+			Citizen.Wait(1000)
+		elseif impact > 50 and impact <= 60 then
+			Citizen.Wait(5000)
+		elseif impact > 60 and impact <= 70 then
+			Citizen.Wait(10000)
+		elseif impact > 70 and impact <= 80 then
+			Citizen.Wait(15000)
+		else
+			Citizen.Wait(23000)
+		end
 
-		 TRYING TO BREAK THE WINDHSHIELD- BOO!
-		 \/
-		--this didn't work -->> DetachVehicleWindscreen(vehicle)
-		--this didn't work -->> BreakEntityGlass(vehicle, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, true, true)
+		StopScreenEffect("DrugsDrivingIn") -- Stop the injured effect to introduce the smooth injured effect exit
 
-		--couldn't tell if this worked... no difference really--> 	PlaySoundFromEntity(vehicle, "FAMILY1_CAR_CRASH_BIG", l_BD7, 0, 0, 0)
-	  ]]--
+		if impact <= 50 then -- Smooth exit, duration depending on impact speed, again
+			StartScreenEffect("DrugsDrivingOut",1000,false)
+			Citizen.Wait(1200)
+			ResetPedMovementClipset(GetPlayerPed(-1))
+			ResetPedWeaponMovementClipset(GetPlayerPed(-1))
+			ResetPedStrafeClipset(GetPlayerPed(-1))
+		elseif impact > 50 and impact <= 60 then
+			StartScreenEffect("DrugsDrivingOut",4000,false)
+			Citizen.Wait(4200)
+			ResetPedMovementClipset(GetPlayerPed(-1))
+			ResetPedWeaponMovementClipset(GetPlayerPed(-1))
+			ResetPedStrafeClipset(GetPlayerPed(-1))
+		elseif impact > 60 and impact <= 70 then
+			StartScreenEffect("DrugsDrivingOut",8000,false)
+			Citizen.Wait(8200)
+			ResetPedMovementClipset(GetPlayerPed(-1))
+			ResetPedWeaponMovementClipset(GetPlayerPed(-1))
+			ResetPedStrafeClipset(GetPlayerPed(-1))
+		elseif impact > 70 and impact <= 80 then
+			StartScreenEffect("DrugsDrivingOut",10000,false)
+			Citizen.Wait(10200)
+			ResetPedMovementClipset(GetPlayerPed(-1))
+			ResetPedWeaponMovementClipset(GetPlayerPed(-1))
+			ResetPedStrafeClipset(GetPlayerPed(-1))
+		else
+			StartScreenEffect("DrugsDrivingOut",20000,false)
+			Citizen.Wait(20200)
+			ResetPedMovementClipset(GetPlayerPed(-1))
+			ResetPedWeaponMovementClipset(GetPlayerPed(-1))
+			ResetPedStrafeClipset(GetPlayerPed(-1))
+		end
+	end
+	print("[position] x:" ..  position.x .. " y:" .. position.y .. " z:" .. position.z)
+	print("[fwdposition] x:" ..  fwdposition.x .. " y:" .. fwdposition.y .. " z:" .. fwdposition.z)
+	print("[prevVelocity] x:" ..  prevVelocity.x .. " y:" .. prevVelocity.y .. " z:" .. prevVelocity.z)
+	print("[prevRotationVelocity] x:" ..  prevRotationVelocity.x .. " y:" .. prevRotationVelocity.y .. " z:" .. prevRotationVelocity.z)
+	print("")
+	print("velocity_multiplier: " .. velocity_multiplier)
+	print("damage_multiplier: " .. damage_multiplier)
+	print("damage_impact: " .. damage_impact)
+	print("ejectionDamage: " .. ejectionDamage)
+	print("---------")
+	print("")
 
-		--[[ this works below ]]--
-		--PlayPain(player, 7, 0, 0)
-		--ApplyPedDamagePack(player, 'BigRunOverByVehicle', ejectionDamage, 2)
-		--ShakeGameplayCam("JOLT_SHAKE", damage_impact)
-		--RenderFirstPersonCam(true, 1.0, 3)
+	--[[ TO DO:
+	-- WINDSHIELD NEEDS TO BREAK SOMEHOW
+	-- PROBABLY NEED MORE BLOOD
+	-- A GLASS SHATTER SOUND WOULD ALSO BE COOL HERE
 
-	  --[testing this]--
-		--StartParticleFxNonLoopedOnEntity('glass_windscreen', player, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z,  1.0, false, false, false)
-		--StartParticleFxNonLoopedOnEntity('ptfx_blood_spray', player, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z,  1.0, false, false, false)
-	  --SetPedMovementClipset(player, 'move_injured_generic', 1.0)
-		--DID NOT WORK--> BreakEntityGlass(vehicle, position.x, position.y, position.z, 1, fwdposition.x, fwdposition.y, fwdposition.z, 0, 1, 1)
-		--[continue what is already working]--
-		SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
-		SetPedToRagdoll(player, 1000, 2000, 0, true, false, false)
-		ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, false, false, true)
-		ApplyDamageToPed(player, ejectionDamage, false)
-		SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z * -1.5)
-		Citizen.Wait(50)
+	 TRYING TO BREAK THE WINDHSHIELD- BOO!
+	 \/
+	--this didn't work -->> DetachVehicleWindscreen(vehicle)
+	--this didn't work -->> BreakEntityGlass(vehicle, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, true, true)
+
+	--couldn't tell if this worked... no difference really--> 	PlaySoundFromEntity(vehicle, "FAMILY1_CAR_CRASH_BIG", l_BD7, 0, 0, 0)
+	]]--
+
+	--[[ this works below ]]--
+	--PlayPain(player, 7, 0, 0)
+	--ApplyPedDamagePack(player, 'BigRunOverByVehicle', ejectionDamage, 2)
+	--ShakeGameplayCam("JOLT_SHAKE", damage_impact)
+	--RenderFirstPersonCam(true, 1.0, 3)
+
+	--[testing this]--
+	--StartParticleFxNonLoopedOnEntity('glass_windscreen', player, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z,  1.0, false, false, false)
+	--StartParticleFxNonLoopedOnEntity('ptfx_blood_spray', player, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z,  1.0, false, false, false)
+	--SetPedMovementClipset(player, 'move_injured_generic', 1.0)
+	--DID NOT WORK--> BreakEntityGlass(vehicle, position.x, position.y, position.z, 1, fwdposition.x, fwdposition.y, fwdposition.z, 0, 1, 1)
+	--[continue what is already working]--
+	SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
+	SetPedToRagdoll(player, 1000, 2000, 0, true, false, false)
+	ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, false, false, true)
+	ApplyDamageToPed(player, ejectionDamage, false)
+	SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z * -1.5)
+	Citizen.Wait(50)
 end
 
 local function blackout(player, impact)
@@ -293,8 +283,8 @@ local function blackout(player, impact)
 
 			-- HERE IS AN ATTEMPT TO PLAY A LAYING ON THE STEERING WHEEL ANIMATION -> Ped disapears, don't know why
 			-- while (not HasAnimDictLoaded("veh@std@ds@base")) do
-				-- RequestAnimDict("veh@std@ds@base")
-				-- Citizen.Wait(5)
+			-- RequestAnimDict("veh@std@ds@base")
+			-- Citizen.Wait(5)
 			-- end
 			-- TaskPlayAnim(GetPlayerPed(-1), "veh@std@ds@base", "veh@std@ds@base", 8.0, 1.0, 20000, -1, 0, 0, 0, 0)
 			--veh@std@ds@base
@@ -407,7 +397,6 @@ end
 --------------------------------------------------------
 
 Citizen.CreateThread(function()
-
 	while true do
 
 		Citizen.Wait(100)
@@ -471,11 +460,6 @@ Citizen.CreateThread(function()
 				vehicleIsLightsOn = 'off'
 			end
 
-
-
-
-
-
 			-- Vehicle Siren
 			local vehicleSiren
 
@@ -484,6 +468,7 @@ Citizen.CreateThread(function()
 			else
 				vehicleSiren = false
 			end
+
 
 			-- Vehicle Seatbelt
 			local prevSpeed = currSpeed
@@ -494,29 +479,39 @@ Citizen.CreateThread(function()
 
 			if has_value(vehiclesCars, vehicleClass) == true and vehicleClass ~= 8 then
         if not seatbeltIsOn then
+					print("the seatbelt is on")
           if vehIsMovingFwd and (prevSpeed > (seatbeltEjectSpeed)) and (impact > (seatbeltEjectAccel*3.7)) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
-						 entFwdVector = GetEntityForwardVector(player)
-						 if (impact > (seatbeltEjectAccel*5.1)) then
-						     blackout(player, impact)
-						 end
-						 ejectPedFromVehicle(player, vehicle, impact, position, entFwdVector, prevVelocity, prevRotationVelocity)
+						entFwdVector = GetEntityForwardVector(player)
+						if (impact > (seatbeltEjectAccel*5.1)) then
+							blackout(player, impact)
+						end
+						ejectPedFromVehicle(player, vehicle, impact, position, entFwdVector, prevVelocity, prevRotationVelocity)
           else
-            -- Update previous velocity for ejecting player
-            prevVelocity = GetEntityVelocity(vehicle)
-						prevRotationVelocity = GetEntityRotationVelocity(vehicle)
+              -- Update previous velocity for ejecting player
+              prevVelocity = GetEntityVelocity(vehicle)
+							prevRotationVelocity = GetEntityRotationVelocity(vehicle)
           end
         else
+					print("the seatbelt is off")
 					SetPedConfigFlag(PlayerPedId(), 32, true)
 					DisableControlAction(0, 75)
+					print("--------------------------------------------------------------")
+					print("(not isBlackedOut): " .. (not isBlackedOut))
+					print("vehIsMovingFwd: " .. vehIsMovingFwd)
+					print("currSpeed < prevSpeed: " .. (currSpeed < prevSpeed))
+					print("--------------------------------------------------------------")
+					print("((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired): " .. ((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired))
 					if (not isBlackedOut) and vehIsMovingFwd and (currSpeed < prevSpeed) and ((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired) then
+						print("IMPACT!!!!!!")
 						blackout(player, impact)
 					else
-            -- Update previous velocity for ejecting player
-            prevVelocity = GetEntityVelocity(vehicle)
+						-- Update previous velocity for ejecting player
+						prevVelocity = GetEntityVelocity(vehicle)
 						prevRotationVelocity = GetEntityRotationVelocity(vehicle)
-          end
-        end
+					end
+				end
 			elseif has_value(vehiclesCars, vehicleClass) == true and vehicleClass == 8 then
+				print("there is no seatbelt in the vehicle. careful now!")
 				local prevSpeed = currSpeed
 				currSpeed = vehicleSpeedSource
 
@@ -529,7 +524,7 @@ Citizen.CreateThread(function()
 					ejectPedFromVehicle(player, vehicle, impact, position, entFwdVector, prevVelocity, prevRotationVelocity)
 					Citizen.Wait(100)
 					if (impact > (seatbeltEjectAccel*4.1)) then
-					    blackout(impact)
+						blackout(impact)
 					end
 				else
 					-- Update previous velocity for ejecting player
