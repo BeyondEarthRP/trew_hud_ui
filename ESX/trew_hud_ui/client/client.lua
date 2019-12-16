@@ -490,7 +490,8 @@ Citizen.CreateThread(function()
 			local prevSpeed = currSpeed
 			currSpeed = vehicleSpeedSource
 
-			local vehIsMovingFwd = GetEntitySpeedVector(vehicle, true).y > 1.0
+			--local vehIsMovingFwd = GetEntitySpeedVector(vehicle, true).y > 1.0
+			vehIsMovingFwd = true --Testing without the variable / i set to true so i don't have to alter the below stuff
 			local impact = (prevSpeed - currSpeed) / GetFrameTime()
 
 			if has_value(vehiclesCars, vehicleClass) == true and vehicleClass ~= 8 then
