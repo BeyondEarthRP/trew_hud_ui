@@ -478,22 +478,22 @@ Citizen.CreateThread(function()
 			local impact = (prevSpeed - currSpeed) --/ GetFrameTime()
 
 			if has_value(vehiclesCars, vehicleClass) == true and vehicleClass ~= 8 then
-				if (prevSpeed - currSpeed) > 10 then
-					print("--------------------------------------------------------------")
-					print("(not isBlackedOut): " .. tostring((not isBlackedOut)))
-					print("vehIsMovingFwd: " .. tostring(vehIsMovingFwd))
-					print("currSpeed < prevSpeed: " .. tostring((currSpeed < prevSpeed)))
-					print("")
-					print("prevSpeed: " .. prevSpeed)
-					print("currSpeed: " .. currSpeed)
-					print("prevSpeed - currSpeed = " .. (prevSpeed - currSpeed))
-					print("is this greater than " .. Config.BlackoutSpeedRequired)
-					print("((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired): " .. tostring(((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired)))
-					print("")
-				end
+
         if not seatbeltIsOn then
+					if (prevSpeed - currSpeed) > 10 then
+						print("--------------------------------------------------------------")
+						print("vehIsMovingFwd: " .. tostring(vehIsMovingFwd))
+						print("(prevSpeed > seatbeltEjectSpeed): " .. tostring((prevSpeed > (seatbeltEjectSpeed)))
+						print("")
+						print("prevSpeed: " .. prevSpeed)
+						print("currSpeed: " .. currSpeed)
+						print("impact = " .. impact)
+						print("is this greater than " (seatbeltEjectAccel*3.7) .. "? " .. tostring((impact > (seatbeltEjectAccel*3.7)))
+						print("((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired): " .. tostring(((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired)))
+						print("")
+					end
 					--print("the seatbelt is off")
-          if vehIsMovingFwd and (prevSpeed > (seatbeltEjectSpeed)) and (impact > (seatbeltEjectAccel*3.7)) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
+          if vehIsMovingFwd and (prevSpeed > seatbeltEjectSpeed) and (impact > (seatbeltEjectAccel*3.7)) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
 						print(impact .. "IMPACT!!!!!!")
 						entFwdVector = GetEntityForwardVector(player)
 						if (impact > (seatbeltEjectAccel*5.1)) then
@@ -511,6 +511,19 @@ Citizen.CreateThread(function()
 					--print("the seatbelt is on")
 					SetPedConfigFlag(PlayerPedId(), 32, true)
 					DisableControlAction(0, 75)
+					if (prevSpeed - currSpeed) > 10 then
+						print("--------------------------------------------------------------")
+						print("(not isBlackedOut): " .. tostring((not isBlackedOut)))
+						print("vehIsMovingFwd: " .. tostring(vehIsMovingFwd))
+						print("currSpeed < prevSpeed: " .. tostring((currSpeed < prevSpeed)))
+						print("")
+						print("prevSpeed: " .. prevSpeed)
+						print("currSpeed: " .. currSpeed)
+						print("prevSpeed - currSpeed = " .. (prevSpeed - currSpeed))
+						print("is this greater than " .. Config.BlackoutSpeedRequired)
+						print("((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired): " .. tostring(((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired)))
+						print("")
+					end
 					if (not isBlackedOut) and vehIsMovingFwd and (currSpeed < prevSpeed) and ((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired) then
 						print(impact .. "IMPACT!!!!!!")
 						if (impact > (seatbeltEjectAccel*7.1)) then
