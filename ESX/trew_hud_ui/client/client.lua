@@ -478,8 +478,19 @@ Citizen.CreateThread(function()
 			local impact = (prevSpeed - currSpeed) / GetFrameTime()
 
 			if has_value(vehiclesCars, vehicleClass) == true and vehicleClass ~= 8 then
+				print("--------------------------------------------------------------")
+				print("(not isBlackedOut): " .. tostring((not isBlackedOut)))
+				print("vehIsMovingFwd: " .. tostring(vehIsMovingFwd))
+				print("currSpeed < prevSpeed: " .. tostring((currSpeed < prevSpeed)))
+				print("")
+				print("prevSpeed: " .. prevSpeed)
+				print("currSpeed: " .. currSpeed)
+				print("prevSpeed - currSpeed = " .. (prevSpeed - currSpeed))
+				print("is this greater than " .. Config.BlackoutSpeedRequired)
+				print("((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired): " .. tostring(((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired)))
+				print("")
         if not seatbeltIsOn then
-					print("the seatbelt is on")
+					print("the seatbelt is off")
           if vehIsMovingFwd and (prevSpeed > (seatbeltEjectSpeed)) and (impact > (seatbeltEjectAccel*3.7)) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
 						entFwdVector = GetEntityForwardVector(player)
 						if (impact > (seatbeltEjectAccel*5.1)) then
@@ -492,20 +503,9 @@ Citizen.CreateThread(function()
 							prevRotationVelocity = GetEntityRotationVelocity(vehicle)
           end
         else
-					print("the seatbelt is off")
+					print("the seatbelt is on")
 					SetPedConfigFlag(PlayerPedId(), 32, true)
 					DisableControlAction(0, 75)
-					print("--------------------------------------------------------------")
-					print("(not isBlackedOut): " .. tostring((not isBlackedOut)))
-					print("vehIsMovingFwd: " .. tostring(vehIsMovingFwd))
-					print("currSpeed < prevSpeed: " .. tostring((currSpeed < prevSpeed)))
-					print("")
-					print("prevSpeed: " .. prevSpeed)
-					print("currSpeed: " .. currSpeed)
-					print("prevSpeed - currSpeed = " .. (prevSpeed - currSpeed))
-					print("is this greater than " .. Config.BlackoutSpeedRequired)
-					print("((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired): " .. tostring(((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired)))
-					print("")
 					if (not isBlackedOut) and vehIsMovingFwd and (currSpeed < prevSpeed) and ((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired) then
 						print("IMPACT!!!!!!")
 						blackout(player, impact)
@@ -514,8 +514,9 @@ Citizen.CreateThread(function()
 						prevVelocity = GetEntityVelocity(vehicle)
 						prevRotationVelocity = GetEntityRotationVelocity(vehicle)
 					end
-					print("--------------------------------------------------------------")
 				end
+				print("--------------------------------------------------------------")
+				print("")
 			elseif has_value(vehiclesCars, vehicleClass) == true and vehicleClass == 8 then
 				print("there is no seatbelt in the vehicle. careful now!")
 				local prevSpeed = currSpeed
