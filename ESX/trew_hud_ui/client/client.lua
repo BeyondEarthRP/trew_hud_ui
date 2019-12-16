@@ -134,47 +134,58 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 	local ejectionDamage = math.floor(damage_impact * damage_multiplier)
 	impact = math.floor(impact)
 	DisableAllControlActions(0)
-	SetFollowVehicleCamViewMode(4) -- Force first person view in the car to increase the blinking wakening and blinking effect
+SetFollowVehicleCamViewMode(4) -- Force first person view in the car to increase the blinking wakening and blinking effect
+	TriggerServerEvent('InteractSound_CL:PlayWithinDistance', 50.0, 'crash01', 0.5) -- Trigger crash sound around yourself, works with InteractiveSound
+	if impact/100 <= 50 then -- Shakycam on impact
+		ShakeGameplayCam('SMALL_EXPLOSION_SHAKE', 0.4)
+	elseif impact/100 > 50 and impact <= 60 then
+		ShakeGameplayCam('SMALL_EXPLOSION_SHAKE', 0.7)
+	elseif impact/100 > 60 and impact <= 70 then
+		ShakeGameplayCam('MEDIUM_EXPLOSION_SHAKE', 1.2)
+	elseif impact/100 > 70 and impact <= 80 then
+		ShakeGameplayCam('MEDIUM_EXPLOSION_SHAKE', 1.5)
+	else
+		ShakeGameplayCam('LARGE_EXPLOSION_SHAKE', 1.5)
+	end
 	SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
-	ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, false, false, true)
-	SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z * -1.5)
-	SetPedToRagdoll(player, 1000, 2000, 1, true, false, false)
-	Citizen.Wait(impact)
-	SetPedToRagdoll(player, 1000, 2000, 1, true, false, false)
 	if not isBlackedOut then
 		isBlackedOut = true
 		DoScreenFadeOut(100)
-		Citizen.Wait(impact*2)
-		print("PLAYER HEALTH: " .. GetEntityHealth(player))
-		print("ejectionDamage: " .. ejectionDamage)
-		print("Health would be: " .. (GetEntityHealth(player) - ejectionDamage))
-		--ApplyDamageToPed(player, ejectionDamage, false)
-		if not IsEntityDead(GetPlayerPed(-1)) then
-			DoScreenFadeIn(1800) -- Blinking effect
-			StartScreenEffect("DrugsDrivingOut",4000,false)
-			SetPedMovementClipset(GetPlayerPed(-1), "MOVE_M@DRUNK@VERYDRUNK", 1.0) -- Set the injured ped move, best one is verydrunk in my opinion.
-			Citizen.Wait(200)
-			DoScreenFadeOut(1600)
-			SetPedToRagdoll(player, 1000, 2000, 1, true, false, false)
-			Citizen.Wait(1800)
-			DoScreenFadeIn(1400)
-			Citizen.Wait(1600)
-			DoScreenFadeOut(1100)
-			isBlackedOut = false -- Release controls to the player after 2 blinks (added a disable camera mode to force FPS and a disable multiplayer talking)
-			Citizen.Wait(1100)
-			DoScreenFadeIn(1000)
-			Citizen.Wait(1200)
-			DoScreenFadeOut(900)
-			Citizen.Wait(900)
-			DoScreenFadeIn(800)
-			Citizen.Wait(1000)
-			DoScreenFadeOut(700)
-			Citizen.Wait(700)
-			DoScreenFadeIn(600)
-			ResetPedMovementClipset(GetPlayerPed(-1))
-			ResetPedWeaponMovementClipset(GetPlayerPed(-1))
-			ResetPedStrafeClipset(GetPlayerPed(-1))
-		end
+	end
+	ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, false, false, true)
+	SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z * -1.5)
+	SetPedToRagdoll(player, 1000, 2000, 0, true, false, false)
+	print("PLAYER HEALTH: " .. GetEntityHealth(player))
+	print("ejectionDamage: " .. ejectionDamage)
+	print("Health would be: " .. (GetEntityHealth(player) - ejectionDamage))
+	ApplyDamageToPed(player, ejectionDamage*2, false)
+	Citizen.Wait(impact*2)
+	SetPedToRagdoll(player, impact*impact, impact*impact, 0, true, false, false)
+	DoScreenFadeIn(impact*impact)
+	if not IsEntityDead(GetPlayerPed(-1)) and isBlackedOut then
+		StartScreenEffect("DrugsDrivingOut",4000,false)
+		SetPedMovementClipset(GetPlayerPed(-1), "MOVE_M@DRUNK@VERYDRUNK", 1.0) -- Set the injured ped move, best one is verydrunk in my opinion.
+		Citizen.Wait(200)
+		DoScreenFadeOut(1600) -- Blinking effect
+		SetPedToRagdoll(player, 1000, 1000, 0, true, false, false)
+		Citizen.Wait(1800)
+		DoScreenFadeIn(1400)
+		Citizen.Wait(1600)
+		DoScreenFadeOut(1100)
+		isBlackedOut = false -- Release controls to the player after 2 blinks (added a disable camera mode to force FPS and a disable multiplayer talking)
+		Citizen.Wait(1100)
+		DoScreenFadeIn(1000)
+		Citizen.Wait(1200)
+		DoScreenFadeOut(900)
+		Citizen.Wait(900)
+		DoScreenFadeIn(800)
+		Citizen.Wait(1000)
+		DoScreenFadeOut(700)
+		Citizen.Wait(700)
+		DoScreenFadeIn(600)
+		ResetPedMovementClipset(GetPlayerPed(-1))
+		ResetPedWeaponMovementClipset(GetPlayerPed(-1))
+		ResetPedStrafeClipset(GetPlayerPed(-1))
 	end
 
 	Citizen.Wait(50)
@@ -275,7 +286,7 @@ local function blackout(player, impact)
 			--SetEntityHealth(GetPlayerPed(-1), 0)
 
 			Citizen.Wait(200)
-			DoScreenFadeOut(impact * 100)
+			DoScreenFadeOut(100)
 
 			-- HERE IS AN ATTEMPT TO PLAY A LAYING ON THE STEERING WHEEL ANIMATION -> Ped disapears, don't know why
 			-- while (not HasAnimDictLoaded("veh@std@ds@base")) do
