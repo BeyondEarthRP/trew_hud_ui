@@ -485,11 +485,6 @@ Citizen.CreateThread(function()
 				vehicleSiren = false
 			end
 
-
-
-
-
-
 			-- Vehicle Seatbelt
 			local prevSpeed = currSpeed
 			currSpeed = vehicleSpeedSource
@@ -499,11 +494,12 @@ Citizen.CreateThread(function()
 
 			if has_value(vehiclesCars, vehicleClass) == true and vehicleClass ~= 8 then
         if not seatbeltIsOn then
-          if (vehIsMovingFwd and (prevSpeed > (seatbeltEjectSpeed)) and (impact > (seatbeltEjectAccel*3.7))) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
+          if vehIsMovingFwd and (prevSpeed > (seatbeltEjectSpeed)) and (impact > (seatbeltEjectAccel*3.7)) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
 						 entFwdVector = GetEntityForwardVector(player)
 						 if (impact > (seatbeltEjectAccel*5.1)) then
 						     blackout(player, impact)
-						     ejectPedFromVehicle(player, vehicle, impact, position, entFwdVector, prevVelocity, prevRotationVelocity)
+						 end
+						 ejectPedFromVehicle(player, vehicle, impact, position, entFwdVector, prevVelocity, prevRotationVelocity)
           else
             -- Update previous velocity for ejecting player
             prevVelocity = GetEntityVelocity(vehicle)
@@ -528,16 +524,19 @@ Citizen.CreateThread(function()
 
 				local vehIsMovingFwd = GetEntitySpeedVector(vehicle, true).y > 1.0
 				local impact = (prevSpeed - currSpeed) / GetFrameTime()
-				if (vehIsMovingFwd and (prevSpeed > (seatbeltEjectSpeed-10)) and (impact > (seatbeltEjectAccel*1.3))) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
+				if vehIsMovingFwd and (prevSpeed > (seatbeltEjectSpeed-10)) and (impact > (seatbeltEjectAccel*1.3)) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
 					entFwdVector = GetEntityForwardVector(player)
 					ejectPedFromVehicle(player, vehicle, impact, position, entFwdVector, prevVelocity, prevRotationVelocity)
 					Citizen.Wait(100)
-					blackout(impact)
+					if (impact > (seatbeltEjectAccel*4.1)) then
+					    blackout(impact)
+					end
+				else
+					-- Update previous velocity for ejecting player
+					prevVelocity = GetEntityVelocity(vehicle)
+					prevRotationVelocity = GetEntityRotationVelocity(vehicle)
 				end
 			end
-
-
-
 			vehicleInfo = {
 				action = 'updateVehicle',
 
@@ -561,8 +560,6 @@ Citizen.CreateThread(function()
 
 			vehicleInfo['seatbelt']['status'] = seatbeltIsOn
 		else
-
-
 			vehicleCruiser = false
 			vehicleNailSpeed = 0
 			vehicleSignalIndicator = 'off'
@@ -583,15 +580,8 @@ Citizen.CreateThread(function()
 			if Config.ui.showMinimap == false then
 				DisplayRadar(false)
 			end
-
 		end
-
 		SendNUIMessage(vehicleInfo)
-
-
-
-
-
 	end
 end)
 
