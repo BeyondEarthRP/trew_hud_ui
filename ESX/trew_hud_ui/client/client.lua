@@ -475,20 +475,22 @@ Citizen.CreateThread(function()
 			currSpeed = vehicleSpeedSource
 
 			local vehIsMovingFwd = GetEntitySpeedVector(vehicle, true).y > 1.0
-			local impact = (prevSpeed - currSpeed) / GetFrameTime()
+			local impact = (prevSpeed - currSpeed) --/ GetFrameTime()
 
 			if has_value(vehiclesCars, vehicleClass) == true and vehicleClass ~= 8 then
-				print("--------------------------------------------------------------")
-				print("(not isBlackedOut): " .. tostring((not isBlackedOut)))
-				print("vehIsMovingFwd: " .. tostring(vehIsMovingFwd))
-				print("currSpeed < prevSpeed: " .. tostring((currSpeed < prevSpeed)))
-				print("")
-				print("prevSpeed: " .. prevSpeed)
-				print("currSpeed: " .. currSpeed)
-				print("prevSpeed - currSpeed = " .. (prevSpeed - currSpeed))
-				print("is this greater than " .. Config.BlackoutSpeedRequired)
-				print("((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired): " .. tostring(((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired)))
-				print("")
+				if (prevSpeed - currSpeed) > 1 then
+					print("--------------------------------------------------------------")
+					print("(not isBlackedOut): " .. tostring((not isBlackedOut)))
+					print("vehIsMovingFwd: " .. tostring(vehIsMovingFwd))
+					print("currSpeed < prevSpeed: " .. tostring((currSpeed < prevSpeed)))
+					print("")
+					print("prevSpeed: " .. prevSpeed)
+					print("currSpeed: " .. currSpeed)
+					print("prevSpeed - currSpeed = " .. (prevSpeed - currSpeed))
+					print("is this greater than " .. Config.BlackoutSpeedRequired)
+					print("((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired): " .. tostring(((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired)))
+					print("")
+				end
         if not seatbeltIsOn then
 					print("the seatbelt is off")
           if vehIsMovingFwd and (prevSpeed > (seatbeltEjectSpeed)) and (impact > (seatbeltEjectAccel*3.7)) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
