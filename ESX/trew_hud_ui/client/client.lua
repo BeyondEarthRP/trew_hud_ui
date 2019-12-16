@@ -488,7 +488,7 @@ Citizen.CreateThread(function()
 						print("prevSpeed: " .. prevSpeed)
 						print("currSpeed: " .. currSpeed)
 						print("impact = " .. impact)
-						print("is this greater than " (seatbeltEjectAccel*3.7) .. "? " .. tostring(impact > (seatbeltEjectAccel*3.7)))
+						print("is this greater than " .. (seatbeltEjectAccel*3.7) .. "? " .. tostring(impact > (seatbeltEjectAccel*3.7)))
 						print("")
 					end
 					--print("the seatbelt is off")
