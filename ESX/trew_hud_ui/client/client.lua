@@ -488,7 +488,7 @@ Citizen.CreateThread(function()
 						print("prevSpeed: " .. prevSpeed)
 						print("currSpeed: " .. currSpeed)
 						print("impact = " .. impact)
-						print("is this greater than " .. (seatbeltEjectAccel*3.7) .. "? " .. tostring(impact > (seatbeltEjectAccel*3.7)))
+						print("is this greater than " .. (seatbeltEjectAccel*3.2) .. "? " .. tostring(impact > (seatbeltEjectAccel*3.7)))
 						print("")
 					end
 					--print("the seatbelt is off")
@@ -497,7 +497,7 @@ Citizen.CreateThread(function()
 						entFwdVector = GetEntityForwardVector(player)
 						print("You've been ejected from the vehicle...")
 						if (impact > (seatbeltEjectAccel*6.1)) then
-							print("greater than " .. (seatbeltEjectAccel*6.1) .. "... and you blacked out like a true wuss...")
+							print("greater than " .. (seatbeltEjectAccel*5.8) .. "... and you blacked out like a true wuss...")
 							blackout(player, impact)
 						end
 						ejectPedFromVehicle(player, vehicle, impact, position, entFwdVector, prevVelocity, prevRotationVelocity)
