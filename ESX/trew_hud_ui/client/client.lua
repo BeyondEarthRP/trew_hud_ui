@@ -138,11 +138,11 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 	ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, false, false, true)
 	SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z * -1.5)
 	SetPedToRagdoll(player, 3000, 3000, 0, true, false, false)
-	Citizen.Wait(impact/4)
+	Citizen.Wait(math.floor(impact))
 	if not isBlackedOut then
 		isBlackedOut = true
 		DoScreenFadeOut(100)
-		Citizen.Wait(math.floor(impact*2))
+		Citizen.Wait(math.floor(impact))
 		ApplyDamageToPed(player, ejectionDamage, false)
 		if not IsEntityDead(GetPlayerPed(-1)) then
 			if not HasAnimSetLoaded("MOVE_M@DRUNK@VERYDRUNK") then -- move_m@injured or MOVE_M@DRUNK@VERYDRUNK or move_injured_generic
