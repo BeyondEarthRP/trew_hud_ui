@@ -135,9 +135,16 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 
 	DisableAllControlActions(0)
 	SetFollowVehicleCamViewMode(4) -- Force first person view in the car to increase the blinking wakening and blinking effect
+	StopScreenEffect("DrugsDrivingIn") -- Stop the injured effect to introduce the smooth injured effect exit
+	SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
+	SetPedToRagdoll(player, 1000, 2000, 0, true, false, false)
+	ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, false, false, true)
+	ApplyDamageToPed(player, ejectionDamage, false)
+	SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z * -1.5)
 	Citizen.Wait(200)
 	if not isBlackedOut then
-		DoScreenFadeOut(ejectionDamage*damage_impact)
+		isBlackedOut = true
+		DoScreenFadeOut(ejectionDamage*(damage_impact/2))
 		if not HasAnimSetLoaded("MOVE_M@DRUNK@VERYDRUNK") then -- move_m@injured or MOVE_M@DRUNK@VERYDRUNK or move_injured_generic
 			RequestAnimSet("MOVE_M@DRUNK@VERYDRUNK")
 			while not HasAnimSetLoaded("MOVE_M@DRUNK@VERYDRUNK") do
@@ -145,24 +152,24 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 			end
 		end
 		SetPedMovementClipset(GetPlayerPed(-1), "MOVE_M@DRUNK@VERYDRUNK", 1.0) -- Set the injured ped move, best one is verydrunk in my opinion.
-		DoScreenFadeIn(180) -- Blinking effect
+		DoScreenFadeIn(1800) -- Blinking effect
 		Citizen.Wait(200)
-		DoScreenFadeOut(160)
-		Citizen.Wait(180)
-		DoScreenFadeIn(140)
-		Citizen.Wait(160)
-		DoScreenFadeOut(110)
+		DoScreenFadeOut(1600)
+		Citizen.Wait(1800)
+		DoScreenFadeIn(1400)
+		Citizen.Wait(1600)
+		DoScreenFadeOut(1100)
 		isBlackedOut = false -- Release controls to the player after 2 blinks (added a disable camera mode to force FPS and a disable multiplayer talking)
-		Citizen.Wait(110)
-		DoScreenFadeIn(100)
-		Citizen.Wait(120)
-		DoScreenFadeOut(90)
-		Citizen.Wait(90)
-		DoScreenFadeIn(80)
-		Citizen.Wait(100)
-		DoScreenFadeOut(70)
-		Citizen.Wait(70)
-		DoScreenFadeIn(60)
+		Citizen.Wait(1100)
+		DoScreenFadeIn(1000)
+		Citizen.Wait(1200)
+		DoScreenFadeOut(900)
+		Citizen.Wait(900)
+		DoScreenFadeIn(800)
+		Citizen.Wait(1000)
+		DoScreenFadeOut(700)
+		Citizen.Wait(700)
+		DoScreenFadeIn(600)
 
 		if impact <= 50 then -- Injured visual effect duration, depending on impact speed
 			Citizen.Wait(100)
@@ -177,12 +184,6 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 		end
 	end
 
-	StopScreenEffect("DrugsDrivingIn") -- Stop the injured effect to introduce the smooth injured effect exit
-	SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
-	SetPedToRagdoll(player, 1000, 2000, 0, true, false, false)
-	ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, false, false, true)
-	ApplyDamageToPed(player, ejectionDamage, false)
-	SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z * -1.5)
 	Citizen.Wait(50)
 
 	if impact <= 500 and not playerStatus.isdead then -- Smooth exit, duration depending on impact speed, again
