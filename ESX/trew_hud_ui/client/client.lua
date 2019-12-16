@@ -152,7 +152,7 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 			end
 		end
 		SetPedMovementClipset(GetPlayerPed(-1), "MOVE_M@DRUNK@VERYDRUNK", 1.0) -- Set the injured ped move, best one is verydrunk in my opinion.
-		if not playerStatus.isdead then
+		if not IsEntityDead(GetPlayerPed(-1)) then
 			DoScreenFadeIn(1800) -- Blinking effect
 			Citizen.Wait(200)
 			DoScreenFadeOut(1600)
@@ -172,13 +172,13 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 			Citizen.Wait(700)
 			DoScreenFadeIn(600)
 
-			if impact <= 50 then -- Injured visual effect duration, depending on impact speed
+			if impact <= 500 then -- Injured visual effect duration, depending on impact speed
 				Citizen.Wait(100)
-			elseif impact > 50 and impact <= 60 then
+			elseif impact > 500 and impact <= 60 then
 				Citizen.Wait(500)
-			elseif impact > 60 and impact <= 70 then
+			elseif impact > 600 and impact <= 70 then
 				Citizen.Wait(1000)
-			elseif impact > 70 and impact <= 80 then
+			elseif impact > 700 and impact <= 80 then
 				Citizen.Wait(1500)
 			else
 				Citizen.Wait(2300)
@@ -188,25 +188,25 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 
 	Citizen.Wait(50)
 
-	if impact <= 500 and not playerStatus.isdead then -- Smooth exit, duration depending on impact speed, again
+	if impact <= 500 and not IsEntityDead(GetPlayerPed(-1)) then -- Smooth exit, duration depending on impact speed, again
 		StartScreenEffect("DrugsDrivingOut",1000,false)
 		Citizen.Wait(1200)
 		ResetPedMovementClipset(GetPlayerPed(-1))
 		ResetPedWeaponMovementClipset(GetPlayerPed(-1))
 		ResetPedStrafeClipset(GetPlayerPed(-1))
-	elseif impact > 50 and impact <= 60 then
+	elseif impact > 500 and impact <= 60 then
 		StartScreenEffect("DrugsDrivingOut",4000,false)
 		Citizen.Wait(4200)
 		ResetPedMovementClipset(GetPlayerPed(-1))
 		ResetPedWeaponMovementClipset(GetPlayerPed(-1))
 		ResetPedStrafeClipset(GetPlayerPed(-1))
-	elseif impact > 60 and impact <= 70 then
+	elseif impact > 600 and impact <= 70 then
 		StartScreenEffect("DrugsDrivingOut",8000,false)
 		Citizen.Wait(8200)
 		ResetPedMovementClipset(GetPlayerPed(-1))
 		ResetPedWeaponMovementClipset(GetPlayerPed(-1))
 		ResetPedStrafeClipset(GetPlayerPed(-1))
-	elseif impact > 70 and impact <= 80 then
+	elseif impact > 700 and impact <= 80 then
 		StartScreenEffect("DrugsDrivingOut",10000,false)
 		Citizen.Wait(10200)
 		ResetPedMovementClipset(GetPlayerPed(-1))
