@@ -137,8 +137,8 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 	SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
 	ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, false, false, true)
 	SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z * -1.5)
-	SetPedToRagdoll(player, 1000, 1000, 0, true, false, false)
-	Citizen.Wait(10)
+	SetPedToRagdoll(player, 3000, 3000, 0, true, false, false)
+	Citizen.Wait(impact/4)
 	if not isBlackedOut then
 		isBlackedOut = true
 		DoScreenFadeOut(100)
