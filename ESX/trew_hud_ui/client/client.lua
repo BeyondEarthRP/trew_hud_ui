@@ -499,8 +499,8 @@ Citizen.CreateThread(function()
 					print("(not isBlackedOut): " .. tostring((not isBlackedOut)))
 					print("vehIsMovingFwd: " .. tostring(vehIsMovingFwd))
 					print("currSpeed < prevSpeed: " .. tostring((currSpeed < prevSpeed)))
-					print("--------------------------------------------------------------")
-					print("((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired): " .. ((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired))
+					print("((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired): " .. tostring(((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired)))
+					print("")
 					if (not isBlackedOut) and vehIsMovingFwd and (currSpeed < prevSpeed) and ((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired) then
 						print("IMPACT!!!!!!")
 						blackout(player, impact)
@@ -509,6 +509,7 @@ Citizen.CreateThread(function()
 						prevVelocity = GetEntityVelocity(vehicle)
 						prevRotationVelocity = GetEntityRotationVelocity(vehicle)
 					end
+					print("--------------------------------------------------------------")
 				end
 			elseif has_value(vehiclesCars, vehicleClass) == true and vehicleClass == 8 then
 				print("there is no seatbelt in the vehicle. careful now!")
