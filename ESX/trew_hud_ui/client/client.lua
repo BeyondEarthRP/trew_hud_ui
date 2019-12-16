@@ -171,14 +171,15 @@ AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehicle, veh
   ]]--
 
 	--[[ this works below ]]--
-	PlayPain(player, 7, 0, 0)
-	ApplyPedDamagePack(player, 'BigRunOverByVehicle', ejectionDamage, 2)
+	--PlayPain(player, 7, 0, 0)
+	--ApplyPedDamagePack(player, 'BigRunOverByVehicle', ejectionDamage, 2)
 	ShakeGameplayCam("JOLT_SHAKE", damage_impact)
+	RenderFirstPersonCam(true, 1.0, 3)
 
   --[testing this]--
-	StartParticleFxNonLoopedOnEntity('glass_windscreen', player, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z,  1.0, false, false, false)
-	StartParticleFxNonLoopedOnEntity('ptfx_blood_spray', player, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z,  1.0, false, false, false)
-
+	--StartParticleFxNonLoopedOnEntity('glass_windscreen', player, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z,  1.0, false, false, false)
+	--StartParticleFxNonLoopedOnEntity('ptfx_blood_spray', player, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z,  1.0, false, false, false)
+  SetPedMovementClipset(player, 'move_injured_generic', 1.0)
 	--[continue what is already working]--
 	SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
 	SetPedToRagdoll(player, 1000, 2000, 0, true, false, false)
@@ -186,7 +187,6 @@ AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehicle, veh
 	ApplyDamageToPed(player, ejectionDamage, false)
 	SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z * -1.5)
 	Citizen.Wait(50)
-	RenderFirstPersonCam(0, 0, 3)
 end)
 --------------------------------------------------------
 
