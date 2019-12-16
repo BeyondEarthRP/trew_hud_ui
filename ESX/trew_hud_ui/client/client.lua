@@ -117,7 +117,7 @@ end)
 -- Vehicle Info
 local vehicleCruiser
 local vehicleSignalIndicator = 'off'
-local seatbeltEjectSpeed = 45.0
+local seatbeltEjectSpeed = 28.0
 local seatbeltEjectAccel = 100.0
 local seatbeltIsOn = false
 local currSpeed = 0.0
@@ -144,41 +144,43 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 				Citizen.Wait(0)
 			end
 		end
+
 		SetPedMovementClipset(GetPlayerPed(-1), "MOVE_M@DRUNK@VERYDRUNK", 1.0) -- Set the injured ped move, best one is verydrunk in my opinion.
-		DoScreenFadeIn(1800) -- Blinking effect
-		Citizen.Wait(2000)
-		DoScreenFadeOut(1600)
-		Citizen.Wait(1800)
-		DoScreenFadeIn(1400)
-		Citizen.Wait(1600)
-		DoScreenFadeOut(1100)
+		DoScreenFadeIn(180) -- Blinking effect
+		Citizen.Wait(200)
+		DoScreenFadeOut(160)
+		Citizen.Wait(180)
+		DoScreenFadeIn(140)
+		Citizen.Wait(160)
+		DoScreenFadeOut(110)
 		isBlackedOut = false -- Release controls to the player after 2 blinks (added a disable camera mode to force FPS and a disable multiplayer talking)
-		Citizen.Wait(1100)
-		DoScreenFadeIn(1000)
-		Citizen.Wait(1200)
-		DoScreenFadeOut(900)
-		Citizen.Wait(900)
-		DoScreenFadeIn(800)
-		Citizen.Wait(1000)
-		DoScreenFadeOut(700)
-		Citizen.Wait(700)
-		DoScreenFadeIn(600)
+		Citizen.Wait(110)
+		DoScreenFadeIn(100)
+		Citizen.Wait(120)
+		DoScreenFadeOut(90)
+		Citizen.Wait(90)
+		DoScreenFadeIn(80)
+		Citizen.Wait(100)
+		DoScreenFadeOut(70)
+		Citizen.Wait(70)
+		DoScreenFadeIn(60)
 
 		if impact <= 50 then -- Injured visual effect duration, depending on impact speed
-			Citizen.Wait(1000)
+			Citizen.Wait(100)
 		elseif impact > 50 and impact <= 60 then
-			Citizen.Wait(5000)
+			Citizen.Wait(500)
 		elseif impact > 60 and impact <= 70 then
-			Citizen.Wait(10000)
+			Citizen.Wait(1000)
 		elseif impact > 70 and impact <= 80 then
-			Citizen.Wait(15000)
+			Citizen.Wait(1500)
 		else
-			Citizen.Wait(23000)
+			Citizen.Wait(2300)
 		end
 
 		StopScreenEffect("DrugsDrivingIn") -- Stop the injured effect to introduce the smooth injured effect exit
 
-		if impact <= 50 then -- Smooth exit, duration depending on impact speed, again
+
+		if impact <= 50 and not playerStatus.isdead then -- Smooth exit, duration depending on impact speed, again
 			StartScreenEffect("DrugsDrivingOut",1000,false)
 			Citizen.Wait(1200)
 			ResetPedMovementClipset(GetPlayerPed(-1))
@@ -247,12 +249,7 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 	--SetPedMovementClipset(player, 'move_injured_generic', 1.0)
 	--DID NOT WORK--> BreakEntityGlass(vehicle, position.x, position.y, position.z, 1, fwdposition.x, fwdposition.y, fwdposition.z, 0, 1, 1)
 	--[continue what is already working]--
-	SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
-	SetPedToRagdoll(player, 1000, 2000, 0, true, false, false)
-	ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, false, false, true)
-	ApplyDamageToPed(player, ejectionDamage, false)
-	SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z * -1.5)
-	Citizen.Wait(50)
+
 end
 
 local function blackout(player, impact)
@@ -499,7 +496,7 @@ Citizen.CreateThread(function()
 						print(impact .. "IMPACT!!!!!!")
 						entFwdVector = GetEntityForwardVector(player)
 						if (impact > (seatbeltEjectAccel*5.1)) then
-							print("greater than " .. (seatbeltEjectAccel*5.1) .. "blacked out...")
+							print("greater than " .. (seatbeltEjectAccel*5.1) .. " " .. "blacked out...")
 							blackout(player, impact)
 						end
 						print("... and ejected...")
