@@ -143,8 +143,6 @@ AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehicle, veh
 	local ejectionDamage = math.floor(damage_impact * damage_multiplier)
 
 	DisableAllControlActions(0)
-	PlayPain(player, 7, 0, 0)
-	ApplyPedDamagePack(player, 'BigRunOverByVehicle', damage_multiplier, damage_amount)
 
 	print("[position] x:" ..  position.x .. " y:" .. position.y .. " z:" .. position.z)
 	print("[fwdposition] x:" ..  fwdposition.x .. " y:" .. fwdposition.y .. " z:" .. fwdposition.z)
@@ -171,7 +169,16 @@ AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehicle, veh
 	--couldn't tell if this worked... no difference really--> 	PlaySoundFromEntity(vehicle, "FAMILY1_CAR_CRASH_BIG", l_BD7, 0, 0, 0)
   ]]--
 
-	--[[ this all works below ]]--
+	--[[ this works below ]]--
+	PlayPain(player, 7, 0, 0)
+	ApplyPedDamagePack(player, 'BigRunOverByVehicle', ejectionDamage, damage_impact)
+	ShakeGameplayCam("SMALL_EXPLOSION_SHAKE", 1.0)
+
+  --[testing this]--
+	StartParticleFxNonLoopedOnEntity('glass_windscreen', vehicle, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z,  1.0, false, false, false)
+	StartParticleFxNonLoopedOnEntity('ptfx_blood_spray', player, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z,  1.0, false, false, false)
+
+	--[continue what is already working]--
 	SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
 	SetPedToRagdoll(player, 1000, 2000, 0, true, false, false)
 	ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, false, false, true)
