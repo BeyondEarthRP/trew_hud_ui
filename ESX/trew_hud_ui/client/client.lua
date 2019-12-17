@@ -126,6 +126,7 @@ local prevRotationVelocity = {x = 0.0, y = 0.0, z = 0.0}
 local entFwdVector = {x = 0.0, y = 0.0, z = 0.0}
 local isBlackedOut = false
 
+
 -- Jay's vehicle ejections edit
 local function ejectPedFromVehicle(player, vehicle, impact, position, fwdposition, prevVelocity, prevRotationVelocity)
 	TriggerServerEvent('InteractSound_CL:PlayWithinDistance', 50.0, 'crash01', 0.5) -- Trigger crash sound around yourself, works with InteractiveSound
@@ -141,8 +142,9 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 	SetFollowVehicleCamViewMode(4) -- Force first person view in the car to increase the blinking wakening and blinking effect
 	SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z * -1.5)
 	ApplyForceToEntity(player, 5, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 1, false, true, true, false, true)
+	SmashVehicleWindow(vehicle, 6)
 
-	if impact/10 <= 50 then -- Shakycam on impact
+  if impact/10 <= 50 then -- Shakycam on impact
 		ShakeGameplayCam('SMALL_EXPLOSION_SHAKE', 0.4)
 	elseif impact/10 > 50 and impact <= 60 then
 		ShakeGameplayCam('SMALL_EXPLOSION_SHAKE', 0.7)
@@ -153,23 +155,27 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 	else
 		ShakeGameplayCam('LARGE_EXPLOSION_SHAKE', 1.5)
 	end
-  Citizen.Wait(50)
 	SetPedToRagdoll(player, 1000, 2000, 0, true, false, false)
+  Citizen.Wait(1000)
+
+
 	print("PLAYER HEALTH: " .. GetEntityHealth(player))
 	print("ejectionDamage: " .. (impact/10)+ejectionDamage)
 	print("Health should be: " .. (GetEntityHealth(player) - (impact/10)+ejectionDamage))
 	StartScreenEffect("DrugsDrivingOut",4000,false)
 	ApplyDamageToPed(player, (impact/10)+ejectionDamage, false)
-	if not isBlackedOut then
+
+	--[[if not isBlackedOut then
 		isBlackedOut = not isBlackedOut
 		DoScreenFadeOut(10)
-	end
+	end]]--
 	Citizen.Wait(impact*4)
-	SetPedToRagdoll(player, impact*impact, impact*impact, 0, true, false, false)
-  if isBlackedOut then
+	SetPedToRagdoll(player, impact*4, impact*4, 0, true, false, false)
+
+  --[[if isBlackedOut then
 		isBlackedOut = not isBlackedOut
 		DoScreenFadeIn(impact*3)
-	end
+	end]]--
 	--[[if not IsEntityDead(GetPlayerPed(-1)) and isBlackedOut then
 		DoScreenFadeIn(impact*3)
 		SetPedMovementClipset(player, "MOVE_M@DRUNK@VERYDRUNK", 1.0) -- Set the injured ped move, best one is verydrunk in my opinion.
