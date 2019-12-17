@@ -138,9 +138,10 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 	impact = math.floor(impact)
 	DisableAllControlActions(0)
 
-	SetEntityCoords(player, position.x+fwdposition.x, position.y+fwdposition.y, position.z - 0.47, true, true, true)
-	ApplyForceToEntity(player, 5, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, true, false, true)
-	SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z * -1.5)
+	SetEntityCoords(player, (position.x+fwdposition.x), (position.y+fwdposition.y), (position.z+fwdposition.z), true, true, true) -- 0.47
+	local newPosition = (fwdposition * (impact/100)) + position
+	ApplyForceToEntity(player, 4, newPosition, prevRotationVelocity, 0, false, true, true, false, true)
+	SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z) --* -1.5)
 	SmashVehicleWindow(vehicle, 6)
 
   if impact/10 <= 50 then -- Shakycam on impact
