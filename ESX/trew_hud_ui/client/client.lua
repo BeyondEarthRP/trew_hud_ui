@@ -128,9 +128,7 @@ local isBlackedOut = false
 
 -- Jay's vehicle ejections edit
 local function ejectPedFromVehicle(player, vehicle, impact, position, fwdposition, prevVelocity, prevRotationVelocity)
-	SetFollowVehicleCamViewMode(4) -- Force first person view in the car to increase the blinking wakening and blinking effect
 	TriggerServerEvent('InteractSound_CL:PlayWithinDistance', 50.0, 'crash01', 0.5) -- Trigger crash sound around yourself, works with InteractiveSound
-
 	local velocity_multiplier = (math.floor(((impact/1500) + 1)*100)/100)
 	local damage_multiplier = (math.floor((impact/50)*100)/100) + 0.01
 	local damage_impact = 5.1 * velocity_multiplier
@@ -140,35 +138,36 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 	DisableAllControlActions(0)
 
 	SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
+	SetFollowVehicleCamViewMode(4) -- Force first person view in the car to increase the blinking wakening and blinking effect
 	SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z * -1.5)
 	ApplyForceToEntity(player, 5, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 1, false, true, true, false, true)
 
-	if impact/100 <= 50 then -- Shakycam on impact
+	if impact/10 <= 50 then -- Shakycam on impact
 		ShakeGameplayCam('SMALL_EXPLOSION_SHAKE', 0.4)
-	elseif impact/100 > 50 and impact <= 60 then
+	elseif impact/10 > 50 and impact <= 60 then
 		ShakeGameplayCam('SMALL_EXPLOSION_SHAKE', 0.7)
-	elseif impact/100 > 60 and impact <= 70 then
+	elseif impact/10 > 60 and impact <= 70 then
 		ShakeGameplayCam('MEDIUM_EXPLOSION_SHAKE', 1.2)
-	elseif impact/100 > 70 and impact <= 80 then
+	elseif impact/10 > 70 and impact <= 80 then
 		ShakeGameplayCam('MEDIUM_EXPLOSION_SHAKE', 1.5)
 	else
 		ShakeGameplayCam('LARGE_EXPLOSION_SHAKE', 1.5)
 	end
-
-	--[[if not isBlackedOut then
-		isBlackedOut = true
-		DoScreenFadeOut(100)
-	end]]--
+  Citizen.Wait(50)
 	SetPedToRagdoll(player, 1000, 2000, 0, true, false, false)
 	print("PLAYER HEALTH: " .. GetEntityHealth(player))
 	print("ejectionDamage: " .. ejectionDamage)
 	print("Health would be: " .. (GetEntityHealth(player) - ejectionDamage))
 	StartScreenEffect("DrugsDrivingOut",4000,false)
-	ApplyDamageToPed(player, ejectionDamage*2, false)
+	ApplyDamageToPed(player, (impact/10)+ejectionDamage, false)
 	Citizen.Wait(impact*4)
 	SetPedToRagdoll(player, impact*impact, impact*impact, 0, true, false, false)
-	DoScreenFadeIn(impact*3)
+	if not isBlackedOut then
+		isBlackedOut = true
+		DoScreenFadeOut(1000)
+	end
 	--[[if not IsEntityDead(GetPlayerPed(-1)) and isBlackedOut then
+		DoScreenFadeIn(impact*3)
 		SetPedMovementClipset(player, "MOVE_M@DRUNK@VERYDRUNK", 1.0) -- Set the injured ped move, best one is verydrunk in my opinion.
 		Citizen.Wait(200)
 		DoScreenFadeOut(1600) -- Blinking effect
@@ -234,7 +233,7 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 end
 
 local function blackout(player, impact)
-	impact = impact / 100 -- Before math, this number will be around 500 - 800 ... /100 puts it back on track.
+	impact = impact / 10 -- Before math, this number will be around 500 - 800 ... /10 puts it back on track.
 	-- Only blackout once to prevent an extended blackout if both speed and damage thresholds were met
 	if not isBlackedOut then
 		isBlackedOut = true
@@ -475,12 +474,12 @@ Citizen.CreateThread(function()
 						print("")
 					end
 					--print("the seatbelt is off")
-          if vehIsMovingFwd and (prevSpeed > seatbeltEjectSpeed) and (impact > (seatbeltEjectAccel*3.2)) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
+          if vehIsMovingFwd and (prevSpeed > seatbeltEjectSpeed) and (impact > (seatbeltEjectAccel*3.5)) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
 						print(impact .. "IMPACT!!!!!!")
 						entFwdVector = GetEntityForwardVector(player)
 						print("You've been ejected from the vehicle...")
-						if (impact > (seatbeltEjectAccel*5.1)) then
-							print("greater than " .. (seatbeltEjectAccel*5.1) .. "... you were thrown from the vehicle.")
+						if (impact > (seatbeltEjectAccel*4.5)) then
+							print("greater than " .. (seatbeltEjectAccel*4.5) .. "... you were thrown from the vehicle.")
 							ejectPedFromVehicle(player, vehicle, impact, position, entFwdVector, prevVelocity, prevRotationVelocity)
 						else
 							print("...and you blacked out like a true wuss...")
