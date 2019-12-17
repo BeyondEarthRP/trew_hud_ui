@@ -139,6 +139,10 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 	impact = math.floor(impact)
 	DisableAllControlActions(0)
 
+	SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
+	SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z * -1.5)
+	ApplyForceToEntity(player, 5, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 1, false, true, true, false, true)
+
 	if impact/100 <= 50 then -- Shakycam on impact
 		ShakeGameplayCam('SMALL_EXPLOSION_SHAKE', 0.4)
 	elseif impact/100 > 50 and impact <= 60 then
@@ -151,23 +155,20 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 		ShakeGameplayCam('LARGE_EXPLOSION_SHAKE', 1.5)
 	end
 
-	SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
-	if not isBlackedOut then
+	--[[if not isBlackedOut then
 		isBlackedOut = true
 		DoScreenFadeOut(100)
-	end
-	ApplyForceToEntity(player, 1, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z, 0, false, true, false, false, true)
-	SetEntityVelocity(player, prevVelocity.x, prevVelocity.y, prevVelocity.z * -1.5)
+	end]]--
 	SetPedToRagdoll(player, 1000, 2000, 0, true, false, false)
 	print("PLAYER HEALTH: " .. GetEntityHealth(player))
 	print("ejectionDamage: " .. ejectionDamage)
 	print("Health would be: " .. (GetEntityHealth(player) - ejectionDamage))
 	StartScreenEffect("DrugsDrivingOut",4000,false)
 	ApplyDamageToPed(player, ejectionDamage*2, false)
-	Citizen.Wait(impact*2)
+	Citizen.Wait(impact*4)
 	SetPedToRagdoll(player, impact*impact, impact*impact, 0, true, false, false)
-	DoScreenFadeIn(impact*2)
-	if not IsEntityDead(GetPlayerPed(-1)) and isBlackedOut then
+	DoScreenFadeIn(impact*3)
+	--[[if not IsEntityDead(GetPlayerPed(-1)) and isBlackedOut then
 		SetPedMovementClipset(player, "MOVE_M@DRUNK@VERYDRUNK", 1.0) -- Set the injured ped move, best one is verydrunk in my opinion.
 		Citizen.Wait(200)
 		DoScreenFadeOut(1600) -- Blinking effect
@@ -192,7 +193,7 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 	ResetPedWeaponMovementClipset(GetPlayerPed(-1))
 	ResetPedStrafeClipset(GetPlayerPed(-1))
 	Citizen.Wait(50)
-
+]]--
 	print("[position] x:" ..  position.x .. " y:" .. position.y .. " z:" .. position.z)
 	print("[fwdposition] x:" ..  fwdposition.x .. " y:" .. fwdposition.y .. " z:" .. fwdposition.z)
 	print("[prevVelocity] x:" ..  prevVelocity.x .. " y:" .. prevVelocity.y .. " z:" .. prevVelocity.z)
