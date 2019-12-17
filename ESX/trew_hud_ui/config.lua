@@ -66,25 +66,25 @@ Config.ui = {
 
 	showMinimap			= false,
 
-	showWeapons			= true,
+	showWeapons			= true
 }
 
 
-config.Blackout = {
+Config.blackout = {
 	-- Amount of Time to Blackout, in milliseconds
 	-- 2000 = 2 seconds
-	Time = 20000,
+	time = 20000,
 
 	-- Enable blacking out due to vehicle damage
 	-- If a vehicle suffers an impact greater than the specified value, the player blacks out
-	FromDamage = true,
-	DamageThreshold = 25,
+	fromDamage = true,
+	requiredDamage = 25,
 
 	-- Enable blacking out due to vehicle damage
 	-- If a vehicle suffers an impact greater than the specified value, the player blacks out
-	FromSpeed = true,
-	SpeedThreshold = 855, -- Speed in MPH
+	fromSpeed = true,
+	requiredSpeed = 855, -- Speed in MPH
 
 	-- Enable the disabling of controls if the player is blacked out
-	DisablesControls = true,
+	disablesControls = true
 }
