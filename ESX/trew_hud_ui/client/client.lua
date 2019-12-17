@@ -156,15 +156,19 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
   Citizen.Wait(50)
 	SetPedToRagdoll(player, 1000, 2000, 0, true, false, false)
 	print("PLAYER HEALTH: " .. GetEntityHealth(player))
-	print("ejectionDamage: " .. ejectionDamage)
-	print("Health would be: " .. (GetEntityHealth(player) - ejectionDamage))
+	print("ejectionDamage: " .. (impact/10)+ejectionDamage)
+	print("Health should be: " .. (GetEntityHealth(player) - (impact/10)+ejectionDamage))
 	StartScreenEffect("DrugsDrivingOut",4000,false)
 	ApplyDamageToPed(player, (impact/10)+ejectionDamage, false)
+	if not isBlackedOut then
+		isBlackedOut = not isBlackedOut
+		DoScreenFadeOut(10)
+	end
 	Citizen.Wait(impact*4)
 	SetPedToRagdoll(player, impact*impact, impact*impact, 0, true, false, false)
-	if not isBlackedOut then
-		isBlackedOut = true
-		DoScreenFadeOut(1000)
+  if isBlackedOut then
+		isBlackedOut = not isBlackedOut
+		DoScreenFadeIn(impact*3)
 	end
 	--[[if not IsEntityDead(GetPlayerPed(-1)) and isBlackedOut then
 		DoScreenFadeIn(impact*3)
@@ -474,10 +478,9 @@ Citizen.CreateThread(function()
 						print("")
 					end
 					--print("the seatbelt is off")
-          if vehIsMovingFwd and (prevSpeed > seatbeltEjectSpeed) and (impact > (seatbeltEjectAccel*3.5)) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
+          if vehIsMovingFwd and (prevSpeed > seatbeltEjectSpeed) and (impact > (seatbeltEjectAccel*4.1)) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
 						print(impact .. "IMPACT!!!!!!")
 						entFwdVector = GetEntityForwardVector(player)
-						print("You've been ejected from the vehicle...")
 						if (impact > (seatbeltEjectAccel*4.5)) then
 							print("greater than " .. (seatbeltEjectAccel*4.5) .. "... you were thrown from the vehicle.")
 							ejectPedFromVehicle(player, vehicle, impact, position, entFwdVector, prevVelocity, prevRotationVelocity)
@@ -503,11 +506,11 @@ Citizen.CreateThread(function()
 						print("prevSpeed: " .. prevSpeed)
 						print("currSpeed: " .. currSpeed)
 						print("(seatbeltEjectAccel*7.1) = " .. impact > (seatbeltEjectAccel*7.1))
-						print("is this greater than " .. Config.BlackoutSpeedRequired)
-						print("((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired): " .. tostring(((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired)))
+						print("is this greater than " .. Config.blackout.requiredSpeed)
+						print("((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired): " .. tostring(((prevSpeed - currSpeed) >= Config.blackout.requiredSpeed)))
 						print("")
 					end
-					if (not isBlackedOut) and vehIsMovingFwd and (currSpeed < prevSpeed) and ((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired) then
+					if (not isBlackedOut) and vehIsMovingFwd and (currSpeed < prevSpeed) and ((prevSpeed - currSpeed) >= Config.blackout.requiredSpeed) then
 						print(impact .. "IMPACT!!!!!!")
 						if (impact > (seatbeltEjectAccel*7.1)) then
 							print("greater than " .. (seatbeltEjectAccel*7.1) .. "blacked out...")
@@ -532,7 +535,7 @@ Citizen.CreateThread(function()
 					entFwdVector = GetEntityForwardVector(player)
 					ejectPedFromVehicle(player, vehicle, impact, position, entFwdVector, prevVelocity, prevRotationVelocity)
 					Citizen.Wait(100)
-					if (impact > (seatbeltEjectAccel*4.1)) then
+					if (impact > (seatbeltEjectAccel*6.1)) then
 						blackout(impact)
 					end
 				else
