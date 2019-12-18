@@ -83,7 +83,7 @@ Config.blackout = {
 	-- Enable blacking out due to vehicle damage
 	-- If a vehicle suffers an impact greater than the specified value, the player blacks out
 	fromSpeed = true,
-	requiredSpeed = 855, -- Speed in MPH
+	requiredSpeed = 85, -- Speed in MPH
 
 	-- Enable the disabling of controls if the player is blacked out
 	disablesControls = true

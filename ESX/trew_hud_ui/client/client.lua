@@ -481,14 +481,16 @@ Citizen.CreateThread(function()
 						print("currSpeed: " .. currSpeed)
 						print("currSpeed < prevSpeed: " .. tostring(currSpeed < prevSpeed))
 						print("")
-						print("impact / 100: " .. tostring(impact / 100))
+						print("prevSpeed: " .. tostring(prevSpeed))
 						print("is this greater than " .. tostring(Config.blackout.requiredSpeed))
 						print("")
-						print("((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired): " .. tostring(((impact / 100) >= Config.blackout.requiredSpeed)))
+						print("impact: " .. tostring(impact))
+						print("seatbeltEjectAccel*7.1: " .. tostring(seatbeltEjectAccel*7.1))
+						print("(impact > (seatbeltEjectAccel*7.1)): " .. tostring((impact > (seatbeltEjectAccel*7.1)))
 						print("")
 					end
 					--[[]]--
-					if (not isBlackedOut) and (currSpeed < prevSpeed) and ((impact / 100) >= Config.blackout.requiredSpeed) then
+					if (not isBlackedOut) and (currSpeed < prevSpeed) and (prevSpeed >= Config.blackout.requiredSpeed) and (impact > (seatbeltEjectAccel*7.1)) then
 						print((prevSpeed - currSpeed) .. "IMPACT!!!!!!")
 						blackout(player, impact)
 					else
