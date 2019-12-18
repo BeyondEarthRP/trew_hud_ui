@@ -474,7 +474,7 @@ Citizen.CreateThread(function()
 					DisableControlAction(0, 75)
 					--[[ this is for testing ]]--
 					if (prevSpeed - currSpeed) > 10 then
-					print("--------------------------------------------------------------")
+						print("--------------------------------------------------------------")
 						print("(not isBlackedOut): " .. tostring((not isBlackedOut)))
 						print("")
 						print("prevSpeed: " .. prevSpeed)
@@ -486,7 +486,7 @@ Citizen.CreateThread(function()
 						print("")
 						print("impact: " .. tostring(impact))
 						print("seatbeltEjectAccel*7.1: " .. tostring(seatbeltEjectAccel*7.1))
-						print("(impact > (seatbeltEjectAccel*7.1)): " .. tostring((impact > (seatbeltEjectAccel*7.1)))
+						print("(impact > (seatbeltEjectAccel*7.1)): " .. tostring(impact > (seatbeltEjectAccel*7.1)))
 						print("")
 					end
 					--[[]]--
