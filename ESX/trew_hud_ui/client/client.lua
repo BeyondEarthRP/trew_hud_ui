@@ -481,8 +481,8 @@ Citizen.CreateThread(function()
 						print("currSpeed: " .. currSpeed)
 						print("currSpeed < prevSpeed: " .. tostring(currSpeed < prevSpeed))
 						print("")
-						print("impact / 100: " .. (impact / 100))
-						print("is this greater than " .. Config.blackout.requiredSpeed)
+						print("impact / 100: " .. tostring(impact / 100))
+						print("is this greater than " .. tostring(Config.blackout.requiredSpeed))
 						print("")
 						print("((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired): " .. tostring(((impact / 100) >= Config.blackout.requiredSpeed)))
 						print("")
@@ -511,7 +511,6 @@ Citizen.CreateThread(function()
 			end
 			vehicleInfo = {
 				action = 'updateVehicle',
-
 				status = true,
 				speed = vehicleSpeed,
 				nail = vehicleNailSpeed,
