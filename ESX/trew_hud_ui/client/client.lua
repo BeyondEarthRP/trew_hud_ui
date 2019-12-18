@@ -1,6 +1,6 @@
 local ESX	 = nil
 
--- ESX
+--[[ Initializing ESX ]]--
 Citizen.CreateThread(function()
 	while ESX == nil do
 		TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
@@ -14,24 +14,31 @@ Citizen.CreateThread(function()
 	ESX.PlayerData = ESX.GetPlayerData()
 end)
 
-
-
-
-
-
+--[[ defining zones ]]--
 local zones = { ['AIRP'] = "Los Santos International Airport", ['ALAMO'] = "Alamo Sea", ['ALTA'] = "Alta", ['ARMYB'] = "Fort Zancudo", ['BANHAMC'] = "Banham Canyon Dr", ['BANNING'] = "Banning", ['BEACH'] = "Vespucci Beach", ['BHAMCA'] = "Banham Canyon", ['BRADP'] = "Braddock Pass", ['BRADT'] = "Braddock Tunnel", ['BURTON'] = "Burton", ['CALAFB'] = "Calafia Bridge", ['CANNY'] = "Raton Canyon", ['CCREAK'] = "Cassidy Creek", ['CHAMH'] = "Chamberlain Hills", ['CHIL'] = "Vinewood Hills", ['CHU'] = "Chumash", ['CMSW'] = "Chiliad Mountain State Wilderness", ['CYPRE'] = "Cypress Flats", ['DAVIS'] = "Davis", ['DELBE'] = "Del Perro Beach", ['DELPE'] = "Del Perro", ['DELSOL'] = "La Puerta", ['DESRT'] = "Grand Senora Desert", ['DOWNT'] = "Downtown", ['DTVINE'] = "Downtown Vinewood", ['EAST_V'] = "East Vinewood", ['EBURO'] = "El Burro Heights", ['ELGORL'] = "El Gordo Lighthouse", ['ELYSIAN'] = "Elysian Island", ['GALFISH'] = "Galilee", ['GOLF'] = "GWC and Golfing Society", ['GRAPES'] = "Grapeseed", ['GREATC'] = "Great Chaparral", ['HARMO'] = "Harmony", ['HAWICK'] = "Hawick", ['HORS'] = "Vinewood Racetrack", ['HUMLAB'] = "Humane Labs and Research", ['JAIL'] = "Bolingbroke Penitentiary", ['KOREAT'] = "Little Seoul", ['LACT'] = "Land Act Reservoir", ['LAGO'] = "Lago Zancudo", ['LDAM'] = "Land Act Dam", ['LEGSQU'] = "Legion Square", ['LMESA'] = "La Mesa", ['LOSPUER'] = "La Puerta", ['MIRR'] = "Mirror Park", ['MORN'] = "Morningwood", ['MOVIE'] = "Richards Majestic", ['MTCHIL'] = "Mount Chiliad", ['MTGORDO'] = "Mount Gordo", ['MTJOSE'] = "Mount Josiah", ['MURRI'] = "Murrieta Heights", ['NCHU'] = "North Chumash", ['NOOSE'] = "N.O.O.S.E", ['OCEANA'] = "Pacific Ocean", ['PALCOV'] = "Paleto Cove", ['PALETO'] = "Paleto Bay", ['PALFOR'] = "Paleto Forest", ['PALHIGH'] = "Palomino Highlands", ['PALMPOW'] = "Palmer-Taylor Power Station", ['PBLUFF'] = "Pacific Bluffs", ['PBOX'] = "Pillbox Hill", ['PROCOB'] = "Procopio Beach", ['RANCHO'] = "Rancho", ['RGLEN'] = "Richman Glen", ['RICHM'] = "Richman", ['ROCKF'] = "Rockford Hills", ['RTRAK'] = "Redwood Lights Track", ['SANAND'] = "San Andreas", ['SANCHIA'] = "San Chianski Mountain Range", ['SANDY'] = "Sandy Shores", ['SKID'] = "Mission Row", ['SLAB'] = "Stab City", ['STAD'] = "Maze Bank Arena", ['STRAW'] = "Strawberry", ['TATAMO'] = "Tataviam Mountains", ['TERMINA'] = "Terminal", ['TEXTI'] = "Textile City", ['TONGVAH'] = "Tongva Hills", ['TONGVAV'] = "Tongva Valley", ['VCANA'] = "Vespucci Canals", ['VESP'] = "Vespucci", ['VINE'] = "Vinewood", ['WINDF'] = "Ron Alternates Wind Farm", ['WVINE'] = "West Vinewood", ['ZANCUDO'] = "Zancudo River", ['ZP_ORT'] = "Port of South Los Santos", ['ZQ_UAR'] = "Davis Quartz" }
 
+--[[ defining keys ]]--
 local Keys = {
-	["ESC"] = 322, ["F1"] = 288, ["F2"] = 289, ["F3"] = 170, ["F5"] = 166, ["F6"] = 167, ["F7"] = 168, ["F8"] = 169, ["F9"] = 56, ["F10"] = 57, ["~"] = 243, ["1"] = 157, ["2"] = 158, ["3"] = 160, ["4"] = 164, ["5"] = 165, ["6"] = 159, ["7"] = 161, ["8"] = 162, ["9"] = 163, ["-"] = 84, ["="] = 83, ["BACKSPACE"] = 177, ["TAB"] = 37, ["Q"] = 44, ["W"] = 32, ["E"] = 38, ["R"] = 45, ["T"] = 245, ["Y"] = 246, ["U"] = 303, ["P"] = 199, ["["] = 39, ["]"] = 40, ["ENTER"] = 18, ["CAPS"] = 137, ["A"] = 34, ["S"] = 8, ["D"] = 9, ["F"] = 23, ["G"] = 47, ["H"] = 74, ["K"] = 311, ["L"] = 182, ["LEFTSHIFT"] = 21, ["Z"] = 20, ["X"] = 73, ["C"] = 26, ["V"] = 0, ["B"] = 29, ["N"] = 249, ["M"] = 244, [","] = 82, ["."] = 81, ["LEFTCTRL"] = 36, ["LEFTALT"] = 19, ["SPACE"] = 22, ["RIGHTCTRL"] = 70, ["HOME"] = 213, ["PAGEUP"] = 10, ["PAGEDOWN"] = 11, ["DELETE"] = 178, ["LEFT"] = 174, ["RIGHT"] = 175, ["TOP"] = 27, ["DOWN"] = 173, ["NENTER"] = 201, ["N4"] = 108, ["N5"] = 60, ["N6"] = 107, ["N+"] = 96, ["N-"] = 97, ["N7"] = 117, ["N8"] = 61, ["N9"] = 118
+["ESC"] = 322, ["F1"] = 288, ["F2"] = 289, ["F3"] = 170, ["F5"] = 166,
+["F6"] = 167, ["F7"] = 168, ["F8"] = 169, ["F9"] = 56, ["F10"] = 57,
+["~"] = 243, ["1"] = 157, ["2"] = 158, ["3"] = 160, ["4"] = 164, ["5"] = 165,
+["6"] = 159, ["7"] = 161, ["8"] = 162, ["9"] = 163, ["-"] = 84, ["="] = 83,
+["BACKSPACE"] = 177, ["TAB"] = 37, ["Q"] = 44, ["W"] = 32, ["E"] = 38,
+["R"] = 45, ["T"] = 245, ["Y"] = 246, ["U"] = 303, ["P"] = 199, ["["] = 39,
+["]"] = 40, ["ENTER"] = 18, ["CAPS"] = 137, ["A"] = 34, ["S"] = 8, ["D"] = 9,
+["F"] = 23, ["G"] = 47, ["H"] = 74, ["K"] = 311, ["L"] = 182,
+["LEFTSHIFT"] = 21, ["Z"] = 20, ["X"] = 73, ["C"] = 26, ["V"] = 0, ["B"] = 29,
+["N"] = 249, ["M"] = 244, [","] = 82, ["."] = 81, ["LEFTCTRL"] = 36,
+["LEFTALT"] = 19, ["SPACE"] = 22, ["RIGHTCTRL"] = 70, ["HOME"] = 213,
+["PAGEUP"] = 10, ["PAGEDOWN"] = 11, ["DELETE"] = 178, ["LEFT"] = 174, ["RIGHT"] = 175, ["TOP"] = 27, ["DOWN"] = 173, ["NENTER"] = 201, ["N4"] = 108, ["N5"] = 60, ["N6"] = 107, ["N+"] = 96, ["N-"] = 97, ["N7"] = 117, ["N8"] = 61, ["N9"] = 118
 }
 
-local AllWeapons = json.decode('{"melee":{"dagger":"0x92A27487","bat":"0x958A4A8F","bottle":"0xF9E6AA4B","crowbar":"0x84BD7BFD","unarmed":"0xA2719263","flashlight":"0x8BB05FD7","golfclub":"0x440E4788","hammer":"0x4E875F73","hatchet":"0xF9DCBF2D","knuckle":"0xD8DF3C3C","knife":"0x99B507EA","machete":"0xDD5DF8D9","switchblade":"0xDFE37640","nightstick":"0x678B81B1","wrench":"0x19044EE0","battleaxe":"0xCD274149","poolcue":"0x94117305","stone_hatchet":"0x3813FC08"},"handguns":{"pistol":"0x1B06D571","pistol_mk2":"0xBFE256D4","combatpistol":"0x5EF9FEC4","appistol":"0x22D8FE39","stungun":"0x3656C8C1","pistol50":"0x99AEEB3B","snspistol":"0xBFD21232","snspistol_mk2":"0x88374054","heavypistol":"0xD205520E","vintagepistol":"0x83839C4","flaregun":"0x47757124","marksmanpistol":"0xDC4DB296","revolver":"0xC1B3C3D1","revolver_mk2":"0xCB96392F","doubleaction":"0x97EA20B8","raypistol":"0xAF3696A1"},"smg":{"microsmg":"0x13532244","smg":"0x2BE6766B","smg_mk2":"0x78A97CD0","assaultsmg":"0xEFE7E2DF","combatpdw":"0xA3D4D34","machinepistol":"0xDB1AA450","minismg":"0xBD248B55","raycarbine":"0x476BF155"},"shotguns":{"pumpshotgun":"0x1D073A89","pumpshotgun_mk2":"0x555AF99A","sawnoffshotgun":"0x7846A318","assaultshotgun":"0xE284C527","bullpupshotgun":"0x9D61E50F","musket":"0xA89CB99E","heavyshotgun":"0x3AABBBAA","dbshotgun":"0xEF951FBB","autoshotgun":"0x12E82D3D"},"assault_rifles":{"assaultrifle":"0xBFEFFF6D","assaultrifle_mk2":"0x394F415C","carbinerifle":"0x83BF0278","carbinerifle_mk2":"0xFAD1F1C9","advancedrifle":"0xAF113F99","specialcarbine":"0xC0A3098D","specialcarbine_mk2":"0x969C3D67","bullpuprifle":"0x7F229F94","bullpuprifle_mk2":"0x84D6FAFD","compactrifle":"0x624FE830"},"machine_guns":{"mg":"0x9D07F764","combatmg":"0x7FD62962","combatmg_mk2":"0xDBBD7280","gusenberg":"0x61012683"},"sniper_rifles":{"sniperrifle":"0x5FC3C11","heavysniper":"0xC472FE2","heavysniper_mk2":"0xA914799","marksmanrifle":"0xC734385A","marksmanrifle_mk2":"0x6A6C02E0"},"heavy_weapons":{"rpg":"0xB1CA77B1","grenadelauncher":"0xA284510B","grenadelauncher_smoke":"0x4DD2DC56","minigun":"0x42BF8A85","firework":"0x7F7497E5","railgun":"0x6D544C99","hominglauncher":"0x63AB0442","compactlauncher":"0x781FE4A","rayminigun":"0xB62D1F67"},"throwables":{"grenade":"0x93E220BD","bzgas":"0xA0973D5E","smokegrenade":"0xFDBC8A50","flare":"0x497FACC3","molotov":"0x24B17070","stickybomb":"0x2C3731D9","proxmine":"0xAB564B93","snowball":"0x787F0BB","pipebomb":"0xBA45E8B8","ball":"0x23C9F95C"},"misc":{"petrolcan":"0x34A67B97","fireextinguisher":"0x60EC506","parachute":"0xFBAB5776"}}')
-
-
-
+--[[ defining weapons ]]--
+local AllWeapons = json.decode(
+'{"melee":{"dagger":"0x92A27487","bat":"0x958A4A8F","bottle":"0xF9E6AA4B","crowbar":"0x84BD7BFD","unarmed":"0xA2719263","flashlight":"0x8BB05FD7","golfclub":"0x440E4788","hammer":"0x4E875F73","hatchet":"0xF9DCBF2D","knuckle":"0xD8DF3C3C","knife":"0x99B507EA","machete":"0xDD5DF8D9","switchblade":"0xDFE37640","nightstick":"0x678B81B1","wrench":"0x19044EE0","battleaxe":"0xCD274149","poolcue":"0x94117305","stone_hatchet":"0x3813FC08"},"handguns":{"pistol":"0x1B06D571","pistol_mk2":"0xBFE256D4","combatpistol":"0x5EF9FEC4","appistol":"0x22D8FE39","stungun":"0x3656C8C1","pistol50":"0x99AEEB3B","snspistol":"0xBFD21232","snspistol_mk2":"0x88374054","heavypistol":"0xD205520E","vintagepistol":"0x83839C4","flaregun":"0x47757124","marksmanpistol":"0xDC4DB296","revolver":"0xC1B3C3D1","revolver_mk2":"0xCB96392F","doubleaction":"0x97EA20B8","raypistol":"0xAF3696A1"},"smg":{"microsmg":"0x13532244","smg":"0x2BE6766B","smg_mk2":"0x78A97CD0","assaultsmg":"0xEFE7E2DF","combatpdw":"0xA3D4D34","machinepistol":"0xDB1AA450","minismg":"0xBD248B55","raycarbine":"0x476BF155"},"shotguns":{"pumpshotgun":"0x1D073A89","pumpshotgun_mk2":"0x555AF99A","sawnoffshotgun":"0x7846A318","assaultshotgun":"0xE284C527","bullpupshotgun":"0x9D61E50F","musket":"0xA89CB99E","heavyshotgun":"0x3AABBBAA","dbshotgun":"0xEF951FBB","autoshotgun":"0x12E82D3D"},"assault_rifles":{"assaultrifle":"0xBFEFFF6D","assaultrifle_mk2":"0x394F415C","carbinerifle":"0x83BF0278","carbinerifle_mk2":"0xFAD1F1C9","advancedrifle":"0xAF113F99","specialcarbine":"0xC0A3098D","specialcarbine_mk2":"0x969C3D67","bullpuprifle":"0x7F229F94","bullpuprifle_mk2":"0x84D6FAFD","compactrifle":"0x624FE830"},"machine_guns":{"mg":"0x9D07F764","combatmg":"0x7FD62962","combatmg_mk2":"0xDBBD7280","gusenberg":"0x61012683"},"sniper_rifles":{"sniperrifle":"0x5FC3C11","heavysniper":"0xC472FE2","heavysniper_mk2":"0xA914799","marksmanrifle":"0xC734385A","marksmanrifle_mk2":"0x6A6C02E0"},"heavy_weapons":{"rpg":"0xB1CA77B1","grenadelauncher":"0xA284510B","grenadelauncher_smoke":"0x4DD2DC56","minigun":"0x42BF8A85","firework":"0x7F7497E5","railgun":"0x6D544C99","hominglauncher":"0x63AB0442","compactlauncher":"0x781FE4A","rayminigun":"0xB62D1F67"},"throwables":{"grenade":"0x93E220BD","bzgas":"0xA0973D5E","smokegrenade":"0xFDBC8A50","flare":"0x497FACC3","molotov":"0x24B17070","stickybomb":"0x2C3731D9","proxmine":"0xAB564B93","snowball":"0x787F0BB","pipebomb":"0xBA45E8B8","ball":"0x23C9F95C"},"misc":{"petrolcan":"0x34A67B97","fireextinguisher":"0x60EC506","parachute":"0xFBAB5776"}}'
+)
 
 local vehiclesCars = {0,1,2,3,4,5,6,7,8,9,10,11,12,17,18,19,20};
-
 
 
 -- Hides TREW UI when it's on Pause Menu
@@ -67,6 +74,7 @@ Citizen.CreateThread(function()
 	end
 end)
 
+
 -- Date and time update
 Citizen.CreateThread(function()
 	while true do
@@ -76,10 +84,6 @@ Citizen.CreateThread(function()
 		end
 	end
 end)
-
-
-
-
 
 -- Location update
 Citizen.CreateThread(function()
@@ -111,8 +115,6 @@ Citizen.CreateThread(function()
 		end
 	end
 end)
-
-
 
 -- Vehicle Info
 local vehicleCruiser
@@ -164,11 +166,13 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 	print("Health should be: " .. (GetEntityHealth(player) - (impact/10)+ejectionDamage))
 	StartScreenEffect("DrugsDrivingOut",4000,false)
 	ApplyDamageToPed(player, (impact/10)+ejectionDamage, false)
+	ApplyPedDamagePack(player, 'BigRunOverByVehicle', ejectionDamage, 2)
 
 	--[[if not isBlackedOut then
 		isBlackedOut = not isBlackedOut
 		DoScreenFadeOut(10)
 	end]]--
+
 	Citizen.Wait(impact*4)
 	SetPedToRagdoll(player, impact*4, impact*4, 0, true, false, false)
 
@@ -214,34 +218,10 @@ local function ejectPedFromVehicle(player, vehicle, impact, position, fwdpositio
 	print("ejectionDamage: " .. ejectionDamage)
 	print("---------")
 	print("")
-
-	--[[ TO DO:
-	-- WINDSHIELD NEEDS TO BREAK SOMEHOW
-	-- PROBABLY NEED MORE BLOOD
-	-- A GLASS SHATTER SOUND WOULD ALSO BE COOL HERE
-
-	 TRYING TO BREAK THE WINDHSHIELD- BOO!
-	 \/
-	--this didn't work -->> DetachVehicleWindscreen(vehicle)
-	--this didn't work -->> BreakEntityGlass(vehicle, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, true, true)
-
-	--couldn't tell if this worked... no difference really--> 	PlaySoundFromEntity(vehicle, "FAMILY1_CAR_CRASH_BIG", l_BD7, 0, 0, 0)
-	]]--
-
-	--[[ this works below ]]--
-	--PlayPain(player, 7, 0, 0)
-	--ApplyPedDamagePack(player, 'BigRunOverByVehicle', ejectionDamage, 2)
-	--ShakeGameplayCam("JOLT_SHAKE", damage_impact)
-	--RenderFirstPersonCam(true, 1.0, 3)
-
-	--[testing this]--
-	--StartParticleFxNonLoopedOnEntity('glass_windscreen', player, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z,  1.0, false, false, false)
-	--StartParticleFxNonLoopedOnEntity('ptfx_blood_spray', player, prevVelocity.x, prevVelocity.y, prevVelocity.z, prevRotationVelocity.x, prevRotationVelocity.y, prevRotationVelocity.z,  1.0, false, false, false)
-	--SetPedMovementClipset(player, 'move_injured_generic', 1.0)
-	--DID NOT WORK--> BreakEntityGlass(vehicle, position.x, position.y, position.z, 1, fwdposition.x, fwdposition.y, fwdposition.z, 0, 1, 1)
-	--[continue what is already working]--
 end
 
+
+--[[ This is Salty_VehicleBlackout -- All credit goes to Salty for this... ]]--
 local function blackout(player, impact)
 	impact = impact / 10 -- Before math, this number will be around 500 - 800 ... /10 puts it back on track.
 	-- Only blackout once to prevent an extended blackout if both speed and damage thresholds were met
@@ -382,8 +362,8 @@ local function blackout(player, impact)
 	end
 end
 
---------------------------------------------------------
 
+--[[ MAIN LOOP ]]--
 Citizen.CreateThread(function()
 	while true do
 
@@ -396,11 +376,7 @@ Citizen.CreateThread(function()
 		local vehicleInfo
 
 		if IsPedInAnyVehicle(player, false) and vehicleIsOn then
-
-
 			local vehicleClass = GetVehicleClass(vehicle)
-
-
 			if Config.ui.showMinimap == false then
 				DisplayRadar(true)
 			end
@@ -416,21 +392,16 @@ Citizen.CreateThread(function()
 
 			-- Vehicle Gradient Speed
 			local vehicleNailSpeed
-
 			if vehicleSpeed > Config.vehicle.maxSpeed then
 				vehicleNailSpeed = math.ceil(  280 - math.ceil( math.ceil(Config.vehicle.maxSpeed * 205) / Config.vehicle.maxSpeed) )
 			else
 				vehicleNailSpeed = math.ceil(  280 - math.ceil( math.ceil(vehicleSpeed * 205) / Config.vehicle.maxSpeed) )
 			end
 
-
-
 			-- Vehicle Fuel and Gear
 			local vehicleFuel
 			vehicleFuel = GetVehicleFuelLevel(vehicle)
-
 			local vehicleGear = GetVehicleCurrentGear(vehicle)
-
 			if (vehicleSpeed == 0 and vehicleGear == 0) or (vehicleSpeed == 0 and vehicleGear == 1) then
 				vehicleGear = 'N'
 			elseif vehicleSpeed > 0 and vehicleGear == 0 then
@@ -450,13 +421,11 @@ Citizen.CreateThread(function()
 
 			-- Vehicle Siren
 			local vehicleSiren
-
 			if IsVehicleSirenOn(vehicle) then
 				vehicleSiren = true
 			else
 				vehicleSiren = false
 			end
-
 
 			-- Vehicle Seatbelt
 			local prevSpeed = currSpeed
@@ -467,8 +436,8 @@ Citizen.CreateThread(function()
 			local impact = (prevSpeed - currSpeed) / GetFrameTime()
 
 			if has_value(vehiclesCars, vehicleClass) == true and vehicleClass ~= 8 then
-
-        if not seatbeltIsOn then
+        if not seatbeltIsOn then -- THE SEATBELT IS [OFF]
+					--[[ this is for testing ]]--
 					if (prevSpeed - currSpeed) > 10 then
 						print("--------------------------------------------------------------")
 						print("vehIsMovingFwd: " .. tostring(vehIsMovingFwd))
@@ -483,8 +452,9 @@ Citizen.CreateThread(function()
 						print("is this greater than " .. (seatbeltEjectAccel*3.2) .. "? " .. tostring(impact > (seatbeltEjectAccel*3.2)))
 						print("")
 					end
-					--print("the seatbelt is off")
-          if vehIsMovingFwd and (prevSpeed > seatbeltEjectSpeed) and (impact > (seatbeltEjectAccel*4.1)) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
+					--[[]]--
+
+          if vehIsMovingFwd and (prevSpeed > seatbeltEjectSpeed) and (impact > (seatbeltEjectAccel*4.1)) then
 						print(impact .. "IMPACT!!!!!!")
 						entFwdVector = GetEntityForwardVector(player)
 						if (impact > (seatbeltEjectAccel*4.5)) then
@@ -499,51 +469,40 @@ Citizen.CreateThread(function()
               prevVelocity = GetEntityVelocity(vehicle)
 							prevRotationVelocity = GetEntityRotationVelocity(vehicle)
           end
-        else
-					--print("the seatbelt is on")
-					SetPedConfigFlag(PlayerPedId(), 32, true)
+        else -- THE SEATBELT IS [ON]
+					SetPedConfigFlag(player, 32, true)
 					DisableControlAction(0, 75)
+					--[[ this is for testing ]]--
 					if (prevSpeed - currSpeed) > 10 then
-						print("--------------------------------------------------------------")
+					print("--------------------------------------------------------------")
 						print("(not isBlackedOut): " .. tostring((not isBlackedOut)))
-						print("vehIsMovingFwd: " .. tostring(vehIsMovingFwd))
-						print("currSpeed < prevSpeed: " .. tostring((currSpeed < prevSpeed)))
 						print("")
 						print("prevSpeed: " .. prevSpeed)
 						print("currSpeed: " .. currSpeed)
-						print("(seatbeltEjectAccel*7.1) = " .. impact > (seatbeltEjectAccel*7.1))
+						print("currSpeed < prevSpeed: " .. tostring(currSpeed < prevSpeed))
+						print("")
+						print("impact / 100: " .. (impact / 100))
 						print("is this greater than " .. Config.blackout.requiredSpeed)
-						print("((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired): " .. tostring(((prevSpeed - currSpeed) >= Config.blackout.requiredSpeed)))
+						print("")
+						print("((prevSpeed - currSpeed) >= Config.BlackoutSpeedRequired): " .. tostring(((impact / 100) >= Config.blackout.requiredSpeed)))
 						print("")
 					end
-					if (not isBlackedOut) and vehIsMovingFwd and (currSpeed < prevSpeed) and ((prevSpeed - currSpeed) >= Config.blackout.requiredSpeed) then
-						print(impact .. "IMPACT!!!!!!")
-						if (impact > (seatbeltEjectAccel*7.1)) then
-							print("greater than " .. (seatbeltEjectAccel*7.1) .. "blacked out...")
-							blackout(player, impact)
-						end
+					--[[]]--
+					if (not isBlackedOut) and (currSpeed < prevSpeed) and ((impact / 100) >= Config.blackout.requiredSpeed) then
+						print((prevSpeed - currSpeed) .. "IMPACT!!!!!!")
+						blackout(player, impact)
 					else
 						-- Update previous velocity for ejecting player
 						prevVelocity = GetEntityVelocity(vehicle)
 						prevRotationVelocity = GetEntityRotationVelocity(vehicle)
 					end
 				end
-			elseif has_value(vehiclesCars, vehicleClass) == true and vehicleClass == 8 then
-				print("there is no seatbelt in the vehicle. careful now!")
-				local prevSpeed = currSpeed
-				currSpeed = vehicleSpeedSource
-
-				SetPedConfigFlag(PlayerPedId(), 32, true)
-
-				local vehIsMovingFwd = GetEntitySpeedVector(vehicle, true).y > 1.0
-				local impact = (prevSpeed - currSpeed) / GetFrameTime()
-				if vehIsMovingFwd and (prevSpeed > (seatbeltEjectSpeed-10)) and (impact > (seatbeltEjectAccel*1.3)) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
+			elseif has_value(vehiclesCars, vehicleClass) == true and vehicleClass == 8 then  --IS A MOTORCYCLE
+				--print("there is no seatbelt in the vehicle. careful now!")
+				if vehIsMovingFwd and (prevSpeed > (seatbeltEjectSpeed-10)) and (impact > (seatbeltEjectAccel*3.3)) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
 					entFwdVector = GetEntityForwardVector(player)
 					ejectPedFromVehicle(player, vehicle, impact, position, entFwdVector, prevVelocity, prevRotationVelocity)
 					Citizen.Wait(100)
-					if (impact > (seatbeltEjectAccel*6.1)) then
-						blackout(impact)
-					end
 				else
 					-- Update previous velocity for ejecting player
 					prevVelocity = GetEntityVelocity(vehicle)
@@ -597,8 +556,6 @@ Citizen.CreateThread(function()
 		SendNUIMessage(vehicleInfo)
 	end
 end)
-
-
 
 
 -- Player status
