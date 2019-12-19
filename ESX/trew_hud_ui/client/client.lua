@@ -229,7 +229,7 @@ Citizen.CreateThread(function()
 					then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
 						position = GetEntityCoords(player)
 						fwdPosition = fwdVector(player)
-
+						print("eject")
 						TriggerEvent('berpSeatbelts:ejectPedFromVehicle', player, vehicle, impact, position, fwdPosition, prevVelocity, prevRotVelocity)
 					 else
 						-- Update previous velocity for ejecting player
@@ -243,6 +243,7 @@ Citizen.CreateThread(function()
 					 and prevSpeed > (Config.vehicle.ejectionSpeed * 2)
 					 and (prevSpeed - currSpeed) > (currSpeed*0.255)
 					then
+						print("blackout")
 						TriggerEvent('berpSeatbelts:saltyBlackout', player, impact)
 					else
 					 -- Update previous velocity for ejecting player
@@ -261,7 +262,7 @@ Citizen.CreateThread(function()
 				then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
 					position = GetEntityCoords(player)
 					fwdPosition = fwdVector(player)
-
+					print("eject")
 					TriggerEvent('berpSeatbelts:ejectPedFromVehicle', player, vehicle, impact, position, fwdPosition, prevVelocity, prevRotVelocity)
 				else
 				 -- Update previous velocity for ejecting player
