@@ -116,10 +116,24 @@ Citizen.CreateThread(function()
 	end
 end)
 
+<<<<<<< HEAD
 -- Vehicle Info
 local vehicleCruiser
 local vehicleSignalIndicator = 'off'
 local seatbeltEjectSpeed = 28.0
+=======
+local function fwdVector(entity)
+		local hr = GetEntityHeading(entity) + 90.0
+		if hr < 0.0 then hr = 360.0 + hr end
+		hr = hr * 0.0174533
+		return { x = math.cos(hr) * 2.0, y = math.sin(hr) * 2.0 }
+end
+
+-- Vehicle Info
+local vehicleCruiser
+local vehicleSignalIndicator = 'off'
+--local seatbeltEjectSpeed = 45.0  (moved this to the config)
+>>>>>>> 9846de9673758a8c43f2c5ad737f775cab7f1832
 local seatbeltEjectAccel = 100.0
 local seatbeltIsOn = false
 local currSpeed = 0.0
@@ -128,6 +142,7 @@ local prevRotationVelocity = {x = 0.0, y = 0.0, z = 0.0}
 local entFwdVector = {x = 0.0, y = 0.0, z = 0.0}
 local isBlackedOut = false
 
+<<<<<<< HEAD
 
 -- Jay's vehicle ejections edit
 local function ejectPedFromVehicle(player, vehicle, impact, position, fwdposition, prevVelocity, prevRotationVelocity)
@@ -362,6 +377,9 @@ local function blackout(player, impact)
 	end
 end
 
+=======
+Citizen.CreateThread(function()
+>>>>>>> 9846de9673758a8c43f2c5ad737f775cab7f1832
 
 --[[ MAIN LOOP ]]--
 Citizen.CreateThread(function()
@@ -398,6 +416,10 @@ Citizen.CreateThread(function()
 				vehicleNailSpeed = math.ceil(  280 - math.ceil( math.ceil(vehicleSpeed * 205) / Config.vehicle.maxSpeed) )
 			end
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9846de9673758a8c43f2c5ad737f775cab7f1832
 			-- Vehicle Fuel and Gear
 			local vehicleFuel
 			vehicleFuel = GetVehicleFuelLevel(vehicle)
@@ -419,6 +441,10 @@ Citizen.CreateThread(function()
 				vehicleIsLightsOn = 'off'
 			end
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9846de9673758a8c43f2c5ad737f775cab7f1832
 			-- Vehicle Siren
 			local vehicleSiren
 			if IsVehicleSirenOn(vehicle) then
@@ -427,6 +453,7 @@ Citizen.CreateThread(function()
 				vehicleSiren = false
 			end
 
+<<<<<<< HEAD
 			-- Vehicle Seatbelt
 			local prevSpeed = currSpeed
 			currSpeed = vehicleSpeedSource
@@ -509,6 +536,64 @@ Citizen.CreateThread(function()
 					-- Update previous velocity for ejecting player
 					prevVelocity = GetEntityVelocity(vehicle)
 					prevRotationVelocity = GetEntityRotationVelocity(vehicle)
+=======
+
+			-- Vehicle Seatbelt
+			local prevSpeed = currSpeed
+			currSpeed = vehicleSpeed
+
+			if has_value(vehiclesCars, vehicleClass) == true  -- Vehicle is in list of affected vehicles
+			 and vehicleClass ~= 8  -- Not a motorcycle
+			 and prevSpeed ~= nil   -- has collected enough info to determine a crash
+			then
+				if not seatbeltIsOn then
+					local impact = (prevSpeed - currSpeed) --/ GetFrameTime()
+
+					if GetEntitySpeedVector(vehicle, true).y > 1.0 -- if vehicle is moving forward
+					 and prevSpeed > Config.vehicle.ejectionSpeed
+					 and (prevSpeed - currSpeed) > (currSpeed*0.255)
+					then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
+						position = GetEntityCoords(player)
+						fwdPosition = fwdVector(player)
+
+						TriggerEvent('berpSeatbelts:ejectPedFromVehicle', player, vehicle, impact, position, fwdPosition, prevVelocity, prevRotVelocity)
+					 else
+						-- Update previous velocity for ejecting player
+						prevVelocity = GetEntityVelocity(vehicle)
+						prevRotVelocity = GetEntityRotationVelocity(vehicle)
+					end
+				else
+					SetPedConfigFlag(PlayerPedId(), 32, true)
+					DisableControlAction(0, 75)
+					if GetEntitySpeedVector(vehicle, true).y > 1.0 -- if vehicle is moving forward
+					 and prevSpeed > (Config.vehicle.ejectionSpeed * 2)
+					 and (prevSpeed - currSpeed) > (currSpeed*0.255)
+					then
+						TriggerEvent('berpSeatbelts:saltyBlackout', player, impact)
+					else
+					 -- Update previous velocity for ejecting player
+					 prevVelocity = GetEntityVelocity(vehicle)
+					 prevRotVelocity = GetEntityRotationVelocity(vehicle)
+					end
+				end
+			elseif has_value(vehiclesCars, vehicleClass) == true
+			 and vehicleClass == 8 -- Is a  motorcycle
+			then
+				local impact = (prevSpeed - currSpeed) --/ GetFrameTime()
+
+				if GetEntitySpeedVector(vehicle, true).y > 1.0 -- if vehicle is moving forward
+				 and prevSpeed > (Config.vehicle.ejectionSpeed * 0.75)
+				 and (prevSpeed - currSpeed) > (currSpeed*0.255)
+				then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
+					position = GetEntityCoords(player)
+					fwdPosition = fwdVector(player)
+
+					TriggerEvent('berpSeatbelts:ejectPedFromVehicle', player, vehicle, impact, position, fwdPosition, prevVelocity, prevRotVelocity)
+				else
+				 -- Update previous velocity for ejecting player
+				 prevVelocity = GetEntityVelocity(vehicle)
+				 prevRotVelocity = GetEntityRotationVelocity(vehicle)
+>>>>>>> 9846de9673758a8c43f2c5ad737f775cab7f1832
 				end
 			end
 			vehicleInfo = {
