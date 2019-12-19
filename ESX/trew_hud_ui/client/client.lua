@@ -121,35 +121,21 @@ Citizen.CreateThread(function()
 	end
 end)
 
-
+local function fwdVector(entity)
+		local hr = GetEntityHeading(entity) + 90.0
+		if hr < 0.0 then hr = 360.0 + hr end
+		hr = hr * 0.0174533
+		return { x = math.cos(hr) * 2.0, y = math.sin(hr) * 2.0 }
+end
 
 -- Vehicle Info
 local vehicleCruiser
 local vehicleSignalIndicator = 'off'
-local seatbeltEjectSpeed = 45.0
+--local seatbeltEjectSpeed = 45.0  (moved this to the config)
 local seatbeltEjectAccel = 100.0
 local seatbeltIsOn = false
 local currSpeed = 0.0
 local prevVelocity = {x = 0.0, y = 0.0, z = 0.0}
-
--- Jay's more realistic vehicle ejections edit
-AddEventHandler('trew_hud_ui:ejectPedFromVehicle', function(player, vehAcc, position, prevVelocity)
-
-  local velocity_multiplier = math.floor(((vehAcc/1500) + 1)*100)/100
-	local damage_multiplier = (math.floor((vehAcc/50)*100)/100) + 0.01
-	local damage_impact = 5.1 * velocity_multiplier
-	local ejectionDamage = math.floor( damage_impact * damage_multiplier )
-	DisableAllControlActions(0)
-	PlayPain(player, 7, 0, 0)
-	ApplyPedDamagePack(player, 'BigRunOverByVehicle', damage_multiplier, damage_amount)
-	SetEntityCoords(player, position.x, position.y, position.z - 0.47, true, true, true)
-	SetPedToRagdoll(player, 1000, 2000, 0, true, false, false)
-	ApplyForceToEntity(player, 1, prevVelocity.x*velocity_multiplier, prevVelocity.y*velocity_multiplier, prevVelocity.z*velocity_multiplier, 0.0, 0.0, 0.0, 1, false, true, true, true, true)
-	ApplyDamageToPed(player, ejectionDamage, false)
-	SetEntityVelocity(player, prevVelocity.x*velocity_multiplier, prevVelocity.y*velocity_multiplier, prevVelocity.z*velocity_multiplier)
-	Citizen.Wait(50)
-end)
---------------------------------------------------------
 
 Citizen.CreateThread(function()
 
@@ -192,7 +178,6 @@ Citizen.CreateThread(function()
 			end
 
 
-
 			-- Vehicle Fuel and Gear
 			local vehicleFuel
 			vehicleFuel = GetVehicleFuelLevel(vehicle)
@@ -217,10 +202,6 @@ Citizen.CreateThread(function()
 			end
 
 
-
-
-
-
 			-- Vehicle Siren
 			local vehicleSiren
 
@@ -231,41 +212,61 @@ Citizen.CreateThread(function()
 			end
 
 
-
-
-
-
 			-- Vehicle Seatbelt
-			if has_value(vehiclesCars, vehicleClass) == true and vehicleClass ~= 8 then
+			local prevSpeed = currSpeed
+			currSpeed = vehicleSpeed
 
-				local prevSpeed = currSpeed
-        currSpeed = vehicleSpeedSource
+			if has_value(vehiclesCars, vehicleClass) == true  -- Vehicle is in list of affected vehicles
+			 and vehicleClass ~= 8  -- Not a motorcycle
+			 and prevSpeed ~= nil   -- has collected enough info to determine a crash
+			then
+				if not seatbeltIsOn then
+					local impact = (prevSpeed - currSpeed) --/ GetFrameTime()
 
-        SetPedConfigFlag(PlayerPedId(), 32, true)
+					if GetEntitySpeedVector(vehicle, true).y > 1.0 -- if vehicle is moving forward
+					 and prevSpeed > Config.vehicle.ejectionSpeed
+					 and (prevSpeed - currSpeed) > (currSpeed*0.255)
+					then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
+						position = GetEntityCoords(player)
+						fwdPosition = fwdVector(player)
 
-        if not seatbeltIsOn then
-        	local vehIsMovingFwd = GetEntitySpeedVector(vehicle, true).y > 1.0
-          local vehAcc = (prevSpeed - currSpeed) / GetFrameTime()
-          if (vehIsMovingFwd and (prevSpeed > (seatbeltEjectSpeed/2.237)) and (vehAcc > (seatbeltEjectAccel*2.7))) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
-						 TriggerEvent('trew_hud_ui:ejectPedFromVehicle', player, vehAcc, position, prevVelocity)
-          else
-            -- Update previous velocity for ejecting player
-            prevVelocity = GetEntityVelocity(vehicle)
-          end
-        else
-        	DisableControlAction(0, 75)
-        end
-			elseif has_value(vehiclesCars, vehicleClass) == true and vehicleClass == 8 then
+						TriggerEvent('berpSeatbelts:ejectPedFromVehicle', player, vehicle, impact, position, fwdPosition, prevVelocity, prevRotVelocity)
+					 else
+						-- Update previous velocity for ejecting player
+						prevVelocity = GetEntityVelocity(vehicle)
+						prevRotVelocity = GetEntityRotationVelocity(vehicle)
+					end
+				else
+					SetPedConfigFlag(PlayerPedId(), 32, true)
+					DisableControlAction(0, 75)
+					if GetEntitySpeedVector(vehicle, true).y > 1.0 -- if vehicle is moving forward
+					 and prevSpeed > (Config.vehicle.ejectionSpeed * 2)
+					 and (prevSpeed - currSpeed) > (currSpeed*0.255)
+					then
+						TriggerEvent('berpSeatbelts:saltyBlackout', player, impact)
+					else
+					 -- Update previous velocity for ejecting player
+					 prevVelocity = GetEntityVelocity(vehicle)
+					 prevRotVelocity = GetEntityRotationVelocity(vehicle)
+					end
+				end
+			elseif has_value(vehiclesCars, vehicleClass) == true
+			 and vehicleClass == 8 -- Is a  motorcycle
+			then
+				local impact = (prevSpeed - currSpeed) --/ GetFrameTime()
 
-				local prevSpeed = currSpeed
-				currSpeed = vehicleSpeedSource
+				if GetEntitySpeedVector(vehicle, true).y > 1.0 -- if vehicle is moving forward
+				 and prevSpeed > (Config.vehicle.ejectionSpeed * 0.75)
+				 and (prevSpeed - currSpeed) > (currSpeed*0.255)
+				then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
+					position = GetEntityCoords(player)
+					fwdPosition = fwdVector(player)
 
-				SetPedConfigFlag(PlayerPedId(), 32, true)
-
-				local vehIsMovingFwd = GetEntitySpeedVector(vehicle, true).y > 1.0
-				local vehAcc = (prevSpeed - currSpeed) / GetFrameTime()
-				if (vehIsMovingFwd and (prevSpeed > (seatbeltEjectSpeed/2.237)) and (vehAcc > (seatbeltEjectAccel*1.3))) then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
-					TriggerEvent('trew_hud_ui:ejectPedFromVehicle', player, vehAcc, position, prevVelocity)
+					TriggerEvent('berpSeatbelts:ejectPedFromVehicle', player, vehicle, impact, position, fwdPosition, prevVelocity, prevRotVelocity)
+				else
+				 -- Update previous velocity for ejecting player
+				 prevVelocity = GetEntityVelocity(vehicle)
+				 prevRotVelocity = GetEntityRotationVelocity(vehicle)
 				end
 			end
 
