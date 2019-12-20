@@ -220,9 +220,11 @@ Citizen.CreateThread(function()
 			 and vehicleClass ~= 8  -- Not a motorcycle
 			 and prevSpeed ~= nil   -- has collected enough info to determine a crash
 			then
+				local impact = (prevSpeed - currSpeed) --/ GetFrameTime()
 				if not seatbeltIsOn then
-					local impact = (prevSpeed - currSpeed) --/ GetFrameTime()
-
+					print("Moving forward: " .. GetEntitySpeedVector(vehicle, true).y > 1.0)
+					print("prevSpeed: " .. prevSpeed .. " > " .. Config.vehicle.ejectionSpeed .. " = " .. (prevSpeed > Config.vehicle.ejectionSpeed))
+					print("impact: (" .. prevSpeed .. " - " .. currSpeed .. ") > " .. (currSpeed*0.255) .. " = " .. (prevSpeed - currSpeed) > (currSpeed*0.255))
 					if GetEntitySpeedVector(vehicle, true).y > 1.0 -- if vehicle is moving forward
 					 and prevSpeed > Config.vehicle.ejectionSpeed
 					 and (prevSpeed - currSpeed) > (currSpeed*0.255)
@@ -231,7 +233,7 @@ Citizen.CreateThread(function()
 						fwdPosition = fwdVector(player)
 						print("eject")
 						TriggerEvent('berpSeatbelts:ejectPedFromVehicle', player, vehicle, impact, position, fwdPosition, prevVelocity, prevRotVelocity)
-					 else
+					else
 						-- Update previous velocity for ejecting player
 						prevVelocity = GetEntityVelocity(vehicle)
 						prevRotVelocity = GetEntityRotationVelocity(vehicle)
@@ -239,6 +241,9 @@ Citizen.CreateThread(function()
 				else
 					SetPedConfigFlag(PlayerPedId(), 32, true)
 					DisableControlAction(0, 75)
+					print("Moving forward: " .. GetEntitySpeedVector(vehicle, true).y > 1.0)
+					print("prevSpeed: " .. prevSpeed .. " > " .. (Config.vehicle.ejectionSpeed * 2) .. " = " .. (prevSpeed > Config.vehicle.ejectionSpeed))
+					print("impact: (" .. prevSpeed .. " - " .. currSpeed .. ") > " .. (currSpeed*0.255) .. " = " .. (prevSpeed - currSpeed) > (currSpeed*0.255))
 					if GetEntitySpeedVector(vehicle, true).y > 1.0 -- if vehicle is moving forward
 					 and prevSpeed > (Config.vehicle.ejectionSpeed * 2)
 					 and (prevSpeed - currSpeed) > (currSpeed*0.255)
@@ -250,11 +255,16 @@ Citizen.CreateThread(function()
 					 prevVelocity = GetEntityVelocity(vehicle)
 					 prevRotVelocity = GetEntityRotationVelocity(vehicle)
 					end
+					print("")
 				end
 			elseif has_value(vehiclesCars, vehicleClass) == true
 			 and vehicleClass == 8 -- Is a  motorcycle
 			then
 				local impact = (prevSpeed - currSpeed) --/ GetFrameTime()
+
+				print("Moving forward: " .. GetEntitySpeedVector(vehicle, true).y > 1.0)
+				print("prevSpeed: " .. prevSpeed .. " > " .. (Config.vehicle.ejectionSpeed * 2) .. " = " .. (prevSpeed > Config.vehicle.ejectionSpeed))
+				print("impact: (" .. prevSpeed .. " - " .. currSpeed .. ") > " .. (currSpeed*0.255) .. " = " .. (prevSpeed - currSpeed) > (currSpeed*0.255))
 
 				if GetEntitySpeedVector(vehicle, true).y > 1.0 -- if vehicle is moving forward
 				 and prevSpeed > (Config.vehicle.ejectionSpeed * 0.75)
