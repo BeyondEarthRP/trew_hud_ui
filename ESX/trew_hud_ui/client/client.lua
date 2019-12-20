@@ -216,16 +216,18 @@ Citizen.CreateThread(function()
 			local prevSpeed = currSpeed
 			currSpeed = vehicleSpeed
 
+			vehMovingFwd = GetEntitySpeedVector(vehicle, true).y > 1.0
+
 			if has_value(vehiclesCars, vehicleClass) == true  -- Vehicle is in list of affected vehicles
 			 and vehicleClass ~= 8  -- Not a motorcycle
 			 and prevSpeed ~= nil   -- has collected enough info to determine a crash
 			then
 				local impact = (prevSpeed - currSpeed) --/ GetFrameTime()
 				if not seatbeltIsOn then
-					print("Moving forward: " .. GetEntitySpeedVector(vehicle, true).y > 1.0)
+					print("Moving forward: " .. vehMovingFwd)
 					print("prevSpeed: " .. prevSpeed .. " > " .. Config.vehicle.ejectionSpeed .. " = " .. (prevSpeed > Config.vehicle.ejectionSpeed))
 					print("impact: (" .. prevSpeed .. " - " .. currSpeed .. ") > " .. (currSpeed*0.255) .. " = " .. (prevSpeed - currSpeed) > (currSpeed*0.255))
-					if GetEntitySpeedVector(vehicle, true).y > 1.0 -- if vehicle is moving forward
+					if vehMovingFwd -- if vehicle is moving forward
 					 and prevSpeed > Config.vehicle.ejectionSpeed
 					 and (prevSpeed - currSpeed) > (currSpeed*0.255)
 					then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
@@ -241,10 +243,10 @@ Citizen.CreateThread(function()
 				else
 					SetPedConfigFlag(PlayerPedId(), 32, true)
 					DisableControlAction(0, 75)
-					print("Moving forward: " .. GetEntitySpeedVector(vehicle, true).y > 1.0)
+					print("Moving forward: " .. vehMovingFwd)
 					print("prevSpeed: " .. prevSpeed .. " > " .. (Config.vehicle.ejectionSpeed * 2) .. " = " .. (prevSpeed > Config.vehicle.ejectionSpeed))
 					print("impact: (" .. prevSpeed .. " - " .. currSpeed .. ") > " .. (currSpeed*0.255) .. " = " .. (prevSpeed - currSpeed) > (currSpeed*0.255))
-					if GetEntitySpeedVector(vehicle, true).y > 1.0 -- if vehicle is moving forward
+					if vehMovingFwd -- if vehicle is moving forward
 					 and prevSpeed > (Config.vehicle.ejectionSpeed * 2)
 					 and (prevSpeed - currSpeed) > (currSpeed*0.255)
 					then
@@ -262,11 +264,11 @@ Citizen.CreateThread(function()
 			then
 				local impact = (prevSpeed - currSpeed) --/ GetFrameTime()
 
-				print("Moving forward: " .. GetEntitySpeedVector(vehicle, true).y > 1.0)
+				print("Moving forward: " .. vehMovingFwd
 				print("prevSpeed: " .. prevSpeed .. " > " .. (Config.vehicle.ejectionSpeed * 2) .. " = " .. (prevSpeed > Config.vehicle.ejectionSpeed))
 				print("impact: (" .. prevSpeed .. " - " .. currSpeed .. ") > " .. (currSpeed*0.255) .. " = " .. (prevSpeed - currSpeed) > (currSpeed*0.255))
 
-				if GetEntitySpeedVector(vehicle, true).y > 1.0 -- if vehicle is moving forward
+				if vehMovingFwd -- if vehicle is moving forward
 				 and prevSpeed > (Config.vehicle.ejectionSpeed * 0.75)
 				 and (prevSpeed - currSpeed) > (currSpeed*0.255)
 				then  -- was (seatbeltEjectAccel*9.81) || this is very high.  I ran into some cars an only got about 700ish, running full speed into a head on car.  This should be about half what it is.
