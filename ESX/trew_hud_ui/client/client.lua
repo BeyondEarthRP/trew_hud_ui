@@ -225,9 +225,11 @@ Citizen.CreateThread(function()
 				local impact = (prevSpeed - currSpeed) --/ GetFrameTime()
 				if not seatbeltIsOn then
 
-					print("Moving forward: " .. vehMovingFwd
-					print("prevSpeed: " .. prevSpeed .. " > " .. tostring(Config.vehicle.ejectionSpeed) .. " = " .. tostring(prevSpeed > Config.vehicle.ejectionSpeed))
-					print("impact: (" .. prevSpeed .. " - " .. currSpeed .. ") > " .. (currSpeed*0.255) .. " = " .. tostring((prevSpeed - currSpeed) > (currSpeed*0.255)))
+					if impact > 10 then
+						print("Moving forward: " .. tostring(vehMovingFwd))
+						print("prevSpeed: " .. prevSpeed .. " > " .. tostring(Config.vehicle.ejectionSpeed) .. " = " .. tostring(prevSpeed > Config.vehicle.ejectionSpeed))
+						print("impact: (" .. prevSpeed .. " - " .. currSpeed .. ") > " .. (currSpeed*0.255) .. " = " .. tostring((prevSpeed - currSpeed) > (currSpeed*0.255)))
+					end
 
 					if vehMovingFwd -- if vehicle is moving forward
 					 and prevSpeed > Config.vehicle.ejectionSpeed
@@ -246,9 +248,11 @@ Citizen.CreateThread(function()
 					SetPedConfigFlag(PlayerPedId(), 32, true)
 					DisableControlAction(0, 75)
 
-					print("Moving forward: " .. vehMovingFwd
-					print("prevSpeed: " .. prevSpeed .. " > " .. tostring(Config.vehicle.ejectionSpeed * 2) .. " = " .. tostring(prevSpeed > Config.vehicle.ejectionSpeed))
-					print("impact: (" .. prevSpeed .. " - " .. currSpeed .. ") > " .. (currSpeed*0.255) .. " = " .. tostring((prevSpeed - currSpeed) > (currSpeed*0.255)))
+					if impact > 10 then
+						print("Moving forward: " .. tostring(vehMovingFwd))
+						print("prevSpeed: " .. prevSpeed .. " > " .. tostring(Config.vehicle.ejectionSpeed * 2) .. " = " .. tostring(prevSpeed > Config.vehicle.ejectionSpeed))
+						print("impact: (" .. prevSpeed .. " - " .. currSpeed .. ") > " .. (currSpeed*0.255) .. " = " .. tostring((prevSpeed - currSpeed) > (currSpeed*0.255)))
+					end
 
 					if vehMovingFwd -- if vehicle is moving forward
 					 and prevSpeed > (Config.vehicle.ejectionSpeed * 2)
@@ -268,9 +272,11 @@ Citizen.CreateThread(function()
 			then
 				local impact = (prevSpeed - currSpeed) --/ GetFrameTime()
 
-				print("Moving forward: " .. vehMovingFwd
-				print("prevSpeed: " .. prevSpeed .. " > " .. tostring(Config.vehicle.ejectionSpeed * 0.75) .. " = " .. tostring(prevSpeed > Config.vehicle.ejectionSpeed))
-				print("impact: (" .. prevSpeed .. " - " .. currSpeed .. ") > " .. (currSpeed*0.255) .. " = " .. tostring((prevSpeed - currSpeed) > (currSpeed*0.255)))
+				if impact > 10 then
+					print("Moving forward: " .. tostring(vehMovingFwd))
+					print("prevSpeed: " .. prevSpeed .. " > " .. tostring(Config.vehicle.ejectionSpeed * 0.75) .. " = " .. tostring(prevSpeed > Config.vehicle.ejectionSpeed))
+					print("impact: (" .. prevSpeed .. " - " .. currSpeed .. ") > " .. (currSpeed*0.255) .. " = " .. tostring((prevSpeed - currSpeed) > (currSpeed*0.255)))
+				end
 
 				if vehMovingFwd -- if vehicle is moving forward
 				 and prevSpeed > (Config.vehicle.ejectionSpeed * 0.75)
