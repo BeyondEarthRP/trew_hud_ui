@@ -32,6 +32,7 @@ Config.voice = {
 Config.vehicle = {
 	speedUnit = 'MPH',
 	maxSpeed = 150,
+	ejectionSpeed = 45,
 
 	keys = {
 		seatbelt 	= 'K',
