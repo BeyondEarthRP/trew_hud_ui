@@ -2,7 +2,7 @@ Config = {}
 
 Config.Locale = 'en'
 
-Config.serverLogo = '/opt/FXServer/server-data/BERP-Logo.png'
+Config.serverLogo = 'BERP-Logo.png'
 
 Config.font = {
 	name 	= 'Montserrat',
@@ -64,7 +64,7 @@ Config.ui = {
 	showHunger 			= true,
 	showThirst	 		= true,
 
-	showMinimap			= false,
+	showMinimap			= true,
 
 	showWeapons			= true,
 }
